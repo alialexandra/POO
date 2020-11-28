@@ -14,14 +14,16 @@ public class User {
     // nu, mai mult la filme
     private String username;
     private String sub;
-    private Map<String, Integer> history;
-    private ArrayList<String> favourite;
+    private Map<String, Integer> history; // la initializare vreau sa l fac de tip LinkedHashMap ca sa mi mentina ordinea
+    private List<String> favourite;
+    // acum asta e useless off... viata...
+     private List<String> ratedMovies = new ArrayList<>();
 
 
     public User(String username, String sub, Map<String, Integer> history,
-                ArrayList<String> favourite) {
+                List<String> favourite) {
         this.username = username;
-        this.sub= sub;
+        this.sub = sub;
         this.history = history;
         this.favourite = favourite;
     }
@@ -50,11 +52,19 @@ public class User {
         this.history = history;
     }
 
-    public ArrayList<String> getFavourite() {
+    public List<String> getFavourite() {
         return favourite;
     }
 
-    public void setFavourite(ArrayList<String> favourite) {
+    public void setFavourite(List<String> favourite) {
         this.favourite = favourite;
+    }
+
+    public void setRatedMovies(List<String> ratedMovies) {
+        this.ratedMovies = ratedMovies;
+    }
+
+    public List<String> getRatedMovies() {
+        return ratedMovies;
     }
 }

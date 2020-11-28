@@ -71,7 +71,7 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
-        // ce pana mea inseamna asta *cry*
+        // ce inseamna asta *cry*
 
 
         fileWriter.closeJSON(arrayResult);
