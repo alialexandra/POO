@@ -18,6 +18,7 @@ public class Actor {
     private List<String> filmography;
     private List<String> awards;
     private double average;
+    private int noAwards;
 
     public Actor(String name, String career,
                  List<String> filmography,
@@ -27,6 +28,7 @@ public class Actor {
         this.career = career;
         this.filmography = filmography;
         this.average = 0;
+        this.noAwards = awards.size();
     }
 
     public String getName() {
@@ -68,6 +70,14 @@ public class Actor {
 
     public void setAverage(double average) {
         this.average = average;
+    }
+
+    public int getNoAwards() {
+        return noAwards;
+    }
+
+    public void setNoAwards(int noAwards) {
+        this.noAwards = noAwards;
     }
 
     // metode pentru actori

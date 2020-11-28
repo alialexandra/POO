@@ -1,12 +1,14 @@
 package action;
 
 import actor.Actor;
-import common.Constants;
+import comparators.AwardComparator;
+import comparators.NameComparator;
 import comparators.RatingComparator;
 import entertainment.Movie;
 import entertainment.Show;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public  class Query {
@@ -17,7 +19,7 @@ public  class Query {
     private String sortCriteria;//asc sau desc
     private String criteria;
     // sunt doar 4 filtere, vad eu ce se intampla
-    private List<List<String>> filter = new ArrayList<>(4);
+    private List<List<String>> filter;
     private int number;
 
 
@@ -79,70 +81,92 @@ public  class Query {
     }
 
     // add specific methods
+
+    // average for actors - finished
     public List<Actor> average(List<Actor>actors, List<Movie>movies, List<Show> shows){
         // better safe than sorry
+        List<Actor> sortActors = actors;
+
         for (Actor actor:
-             actors) {
+             sortActors) {
             actor.computeAverage(movies, shows);
         }
 
+
         RatingComparator cmp = new RatingComparator();
 
-        if (sortCriteria.equals("asc")){
-            Collections.sort(actors, cmp);
+        if (this.sortCriteria.equals("asc")){
+            Collections.sort(sortActors, cmp);
         }
-        else
-            Collections.sort(actors, Collections.reverseOrder(cmp));
+        else if(this.sortCriteria.equals("desc"))
+            Collections.sort(sortActors, Collections.reverseOrder(cmp));
 
         //List<String> firstNElementsList = list.stream().limit(n).collect(Collectors.toList())
-        if(this.number <= actors.size()){
-            List<Actor> first = actors.stream().limit(number).collect(Collectors.toList());
+        if(this.number < actors.size()){// <= ??
+            List<Actor> first;
+            first = sortActors.stream().limit(number).collect(Collectors.toList());
             return first;
         }
-        if (this.number > actors.size())
-            return actors;
 
-        return null;
+        return sortActors;
     }
 
+    public List<Actor> getAwarded(List<Actor> actors) {
 
-    /*public double computeAvrgMovies(List<String> roles, List<Movie> movies, Actor actor){
-        double average = 0;
-        for (Movie m: movies){
-            if(roles.contains(m) && !(m.getRatings().isEmpty())){
-
-                for (Double d : m.getRatings().keySet())
-                {
-                    if(d != 0)
-                        average += d;
-                }
-                average /= m.getRatings().size();
+        List<String> awards = this.filter.get(this.filter.size()-1);// sau 3
+        List<Actor> sortActors = new ArrayList<>();
+        for (Actor actor: actors){
+            if(actor.getAwards().containsAll(awards)){
+                sortActors.add(actor);
             }
         }
-        return average;
-    }*/
+        AwardComparator cmp = new AwardComparator();
 
-   /* public List<String> computeAverage(List<Actor> actors, List<Movie> movies, List<Show> shows){
+        if (this.sortCriteria.equals("asc")){
+            Collections.sort(sortActors, cmp);
+        }
+        else if(this.sortCriteria.equals("desc"))
+            Collections.sort(sortActors, Collections.reverseOrder(cmp));
 
+        return sortActors;
 
-        Map<Actor, Double> actorRatings = new LinkedHashMap<>();
-        // List<String> videos = new ArrayList<>();
-        // pentru fiecare actor extragem
-        // filmele in care a jucat sau serialele si
-        // luam si lista de ratinguri
+    }
+
+    public List<Actor> getFiltered(List<Actor> actors){
+
+        Map<String, Boolean> keyWordsFreq = new LinkedHashMap<>();
+
+        List<String> keyWords = this.filter.get(this.filter.size()-2);
+        List<Actor> sorted = new ArrayList<>();
+//Pattern.compile(Pattern.quote(wantedStr), Pattern.CASE_INSENSITIVE).matcher(source).find();
+
         for (Actor actor: actors) {
-            // filmele si serialele in care a jucat
-            List<String> videos = actor.getFilmography();
-            // media filmelor in care a jucat
-            double average = computeAvrgMovies(videos, movies, actor);
-            // calculeaza si pentru fiecare serial
+            for (String s : keyWords) {
+                keyWordsFreq.put(s, false);
+                //List<String> match = Arrays.asList(actor.getCareer().split(" "));
+                if (Pattern.compile(Pattern.quote(s),
+                        Pattern.CASE_INSENSITIVE).matcher(actor.getCareer()).find()){
+                    keyWordsFreq.put(s,true);
+                }
+            }
+            HashSet<Boolean> values = new HashSet<>(keyWordsFreq.values());
+            boolean isUnique = values.size() == 1 && values.contains(true);
 
-            average = computeAvrgShows();
-
-            average /= 2;
-
-            actorRatings.putIfAbsent(actor, average);
+            if (isUnique) {
+                sorted.add(actor);
             }
         }
-    }*/
+        NameComparator cmp = new NameComparator();
+
+        if (this.sortCriteria.equals("asc")){
+            Collections.sort(sorted, cmp);
+        }
+        else if(this.sortCriteria.equals("desc"))
+            Collections.sort(sorted, Collections.reverseOrder(cmp));
+
+        return sorted;
+
+
+
+    }
 }
