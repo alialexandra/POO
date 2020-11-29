@@ -56,55 +56,60 @@ public class Command {
         String entry = movie.getName();
         String userName = user.getUsername();
 
-        if(entry != null && userName != null) {
-            if (!(user.getHistory().containsKey(entry))) {
-                this.message = "error -> " + entry + " is not seen\n";
-            }
+        if(rate != 0) {
+            if (entry != null && userName != null) {
+                if (!(user.getHistory().containsKey(entry))) {
+                    this.message = "error -> " + entry + " is not seen\n";
+                }
 
-            // nu e binee
-            else if (movie.getRatings().containsValue(userName)) {
-                this.message = "error -> " + entry + " is already rated\n";
-            } else {
-                //this.setRating(rate);
-                //nope setRated(true);
-                user.getRatedMovies().add(entry);
-                movie.getRatings().put(rate, userName);
-                this.message = "success -> " + entry + " was rated with " + rate + " by " + user.getUsername() + "\n";
+                // nu e binee
+                else if (movie.getRatings().containsValue(userName)) {
+                    this.message = "error -> " + entry + " is already rated\n";
+                } else {
+                    //this.setRating(rate);
+                    //nope setRated(true);
+                    user.getRatedMovies().add(entry);
+                    movie.getRatings().put(rate, userName);
+                    this.message = "success -> " + entry + " was rated with " + rate + " by " + user.getUsername() + "\n";
+                }
             }
         }
 
     }
     public void rate(Show show, User user, double rate, int season) {
 
-        String entry = show.getName();
-        String userName = user.getUsername();
+        if(rate != 0 && season != 0) {
+            String entry = show.getName();
+            String userName = user.getUsername();
 
-        // aici e aceeasi poveste ca la vazut, ca fiecare sezon
-        // poate fi rated doar o singura data
+            // aici e aceeasi poveste ca la vazut, ca fiecare sezon
+            // poate fi rated doar o singura data
 
-        Season currSeason = show.getSeasons().get(season);
-        int id = currSeason.getCurrentSeason();
-        // nu stiu daca e redundant sau daca era suficeient
-        // doar sa am get season si atat...
+            Season currSeason = show.getSeasons().get(season);
+            int id = currSeason.getCurrentSeason();
+            // nu stiu daca e redundant sau daca era suficeient
+            // doar sa am get season si atat...
 
-        if (!(user.getHistory().containsKey(entry))){ message = "error -> " + entry + " is not seen\n";}
+            if (!(user.getHistory().containsKey(entry))) {
+                message = "error -> " + entry + " is not seen\n";
+            }
 
-        // nu stiu daca merge... :(
-        else if(currSeason.getRatings().containsValue(userName)){
-            this.message = "error -> " + entry +" is already rated\n";
-        }
-        else{
+            // nu stiu daca merge... :(
+            else if (currSeason.getRatings().containsValue(userName)) {
+                this.message = "error -> " + entry + " is already rated\n";
+            } else {
             /*currSeason.setRating(rate);
             currSeason.setRated(true);*/
-            if(currSeason.isRated() == false)
-                currSeason.setRated(true);
-            currSeason.getRatings().put(rate, userName);
-            this.message = "success -> " + entry +" was rated with " + rate +" by " + user.getUsername() +"\n";
+                if (currSeason.isRated() == false)
+                    currSeason.setRated(true);
+                currSeason.getRatings().put(rate, userName);
+                this.message = "success -> " + entry + " was rated with " + rate + " by " + user.getUsername() + "\n";
+            }
         }
 
     }
-    //
-    public void execute(User user, Video video, String type, double rate, int season){
+    //only for view and favourite
+    public void execute(User user, Video video, String type){
         if(user != null && video != null) {
             //if urile sunt viata mea
             if(type.equals(Constants.VIEW))

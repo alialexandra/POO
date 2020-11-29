@@ -89,34 +89,34 @@ public class Show extends Video {
         return message;
     }
 
+    @Override
+    public double computeAvgRating() {
 
-    /*public String rate(User user, double rate, int season) {
-        String message;
-        String entry = this.getName();
-        String userName = user.getUsername();
+        double average = 0;
+        boolean rated = false;
 
-        // aici e aceeasi poveste ca la vazut, ca fiecare sezon
-        // poate fi rated doar o singura data
-
-        Season currSeason = getSeasons().get(season);
-        int id = currSeason.getCurrentSeason();
-        // nu stiu daca e redundant sau daca era suficeient
-        // doar sa am get season si atat...
-
-        if (!(user.getHistory().containsKey(entry))){ message = "error -> " + entry + " is not seen\n";}
-
-        // nu stiu daca merge... :(
-        else if(currSeason.getRatings().containsValue(userName)){
-            message = "error -> " + entry +" is already rated\n";
+        for (Season s:
+             this.seasons) {
+            if (s.isRated()){
+                rated = true;
+                break;
+            }
         }
-        else{
-            *//*currSeason.setRating(rate);
-            currSeason.setRated(true);*//*
-            currSeason.getRatings().put(rate, userName);
-            message = "success -> " + entry +" was rated with " + rate +" by " + user.getUsername() +"\n";
+        // daca cel putin un sezon a primit rating
+        if (rated) {
+            for (Season s:
+                 this.seasons) {
+                if (!(s.getRatings().isEmpty())){
+                    for (Double d: s.getRatings().keySet()){
+                        average += d;
+                    }
+                }
+            }
+            average /= this.noSeasons;
         }
 
-        return message;
-    }*/
+        return average;
+    }
+
 }
 

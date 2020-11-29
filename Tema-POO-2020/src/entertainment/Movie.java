@@ -62,36 +62,29 @@ public class Movie  extends Video {
         }
         //success -> Brexit: The Uncivil War was viewed with total views of 1
         int no  = user.getHistory().get(viewed);
+
         message = "success -> " + viewed +  " was viewed with total views of " + no + "\n";
         return message;
     }
 
-    // e mai complicata decat credeam eu...off
 
-   /* public String rate(User user, double rate) {
+    // compute average rating for movies
+    @Override
+    public double computeAvgRating() {
+        double average = 0;
 
-        String message = "";
-        String entry = this.getName();
-        String userName = user.getUsername();
+        if(!(ratings.isEmpty())) {
 
-        if(entry != null && userName != null) {
-            if (!(user.getHistory().containsKey(entry))) {
-                message = "error -> " + entry + " is not seen\n";
+            for (Double d: ratings.keySet()){
+                if(d != 0){
+                    average += d;
+                }
             }
-
-            // nu e binee
-            else if (this.getRatings().containsValue(userName)) {
-                message = "error -> " + entry + " is already rated\n";
-            } else {
-                //this.setRating(rate);
-                //nope setRated(true);
-                this.getRatings().put(rate, userName);
-                message = "success -> " + entry + " was rated with " + rate + " by " + user.getUsername() + "\n";
-            }
+            average /= ratings.size();
         }
-        return message;
-        }*/
-
+        //ssuper.setRatingAverage(average);
+        return average;
+    }
 
 
 }

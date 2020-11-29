@@ -4,9 +4,8 @@ import entertainment.Movie;
 import entertainment.Season;
 import entertainment.Show;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 
 
 // as putea sa ma folosesc de clasele facute pentru citit informatia
@@ -16,13 +15,13 @@ public class Actor {
     private String name;
     private String career;
     private List<String> filmography;
-    private List<String> awards;
+    private Map<String, Integer> awards;// nu stiu cum sa fac cu Actor Awards
     private double average;
     private int noAwards;
 
     public Actor(String name, String career,
                  List<String> filmography,
-                List<String> awards){
+                Map<String, Integer> awards){
         this.name = name;
         this.awards = awards;
         this.career = career;
@@ -56,11 +55,11 @@ public class Actor {
         this.filmography = filmography;
     }
 
-    public List<String> getAwards() {
+    public Map<String, Integer> getAwards() {
         return awards;
     }
 
-    public void setAwards(List<String> awards) {
+    public void setAwards(Map<String, Integer> awards) {
         this.awards = awards;
     }
 

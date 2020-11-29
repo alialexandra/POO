@@ -18,6 +18,9 @@ public  abstract class Video {
     private int year;
     private List<String> genres;
     private List<String> cast;
+    private double ratingAverage;
+    private int noFavorite;
+    private int noViews;
 
 
 
@@ -30,6 +33,9 @@ public  abstract class Video {
         this.year = year;
         this.genres = genres;
         this.cast = cast;
+        ratingAverage = 0;// intial
+        noFavorite = 0;
+        noViews = 0;
     }
 
     public int getId() {
@@ -72,7 +78,29 @@ public  abstract class Video {
         this.cast = cast;
     }
 
+    public double getRatingAverage() {
+        return ratingAverage;
+    }
 
+    public void setRatingAverage(double ratingAverage) {
+        this.ratingAverage = ratingAverage;
+    }
+
+    public int getNoFavorite() {
+        return noFavorite;
+    }
+
+    public void setNoFavorite(int noFavorite) {
+        this.noFavorite = noFavorite;
+    }
+
+    public int getNoViews() {
+        return noViews;
+    }
+
+    public void setNoViews(int noViews) {
+        this.noViews = noViews;
+    }
 
     /**
      * @param user
@@ -100,13 +128,15 @@ public  abstract class Video {
 
            if (user.getFavourite().contains(newEntry)) {
                message = "success -> "+ newEntry +" was added as favourite\n";
+               // nu sunt sigura
+               this.noFavorite++;
            }
         }
-
-
         return message;
    }
 
     public abstract String view(User user);
+
+    public abstract double computeAvgRating();
 
 }
