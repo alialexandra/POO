@@ -4,7 +4,7 @@ import entertainment.Video;
 
 import java.util.Comparator;
 
-public final class VideoRatingComp implements Comparator<Video> {
+public final class VideoFavComparator implements Comparator<Video> {
 
     @Override
     public int compare(Video o1, Video o2) {
@@ -16,7 +16,7 @@ public final class VideoRatingComp implements Comparator<Video> {
         } else if (o2 == null) {
             result = 1;
         } else {
-            result = Double.compare(o1.getRatingAverage(), o2.getRatingAverage());
+            result = Integer.compare(o1.getNoFavorite(), o2.getNoFavorite());
             if (result == 0) {
                 result = o1.getName().compareTo(o2.getName());
             }

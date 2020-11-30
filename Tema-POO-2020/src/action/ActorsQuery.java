@@ -1,11 +1,13 @@
 package action;
 
 import actor.Actor;
+import actor.ActorsAwards;
 import comparators.AwardComparator;
 import comparators.NameComparator;
 import comparators.RatingComparator;
 import entertainment.Movie;
 import entertainment.Show;
+import utils.Utils;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -53,8 +55,15 @@ public class ActorsQuery extends Query{
         List<String> awards = super.getFilter().get(3);// sau 3
         List<Actor> sortActors = new ArrayList<>();
 
+        List<ActorsAwards> awards1 = new ArrayList<>();
+
+        for (String s:
+             awards) {
+            awards1.add(Utils.stringToAwards(s));
+        }
         for (Actor actor: actors){
-            if(actor.getAwards().keySet().containsAll(awards)){
+
+            if(actor.getAwards().keySet().containsAll(awards1)){
                 sortActors.add(actor);
             }
         }

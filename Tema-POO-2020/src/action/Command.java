@@ -14,11 +14,21 @@ public class Command {
     private String type;// rating, view, favorite
     private String message; //mesajul care va fi scris in output
     // mai am user si numele filmului, dar cred ca le aleg la parsare??
+    private double grade;
+    private int season;
+    private String title;
+    private String username;
 
 
-    public Command(int id, String type) {
+    public Command(int id, String type, double grade, int season, String username,
+                    String title) {
         this.id = id;
         this.type = type;
+        this.message = null;
+        this.grade = grade;
+        this.season = season;
+        this.username = username;
+        this.title = title;
     }
 
     public int getId() {
@@ -45,18 +55,56 @@ public class Command {
         this.message = message;
     }
 
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+
     // execute the given command
     // incerc cu video deocamdata
     // dar trebuie sa am grija cand fac citirea sa apelez ce trebuie
     // daca n am rate de facut dau double cu - sau ceva
 
-    public void rate(Movie movie, User user, double rate) {
+    public void rate(Movie movie, User user) {
 
 
         String entry = movie.getName();
         String userName = user.getUsername();
 
-        if(rate != 0) {
+        if(this.grade != 0) {
             if (entry != null && userName != null) {
                 if (!(user.getHistory().containsKey(entry))) {
                     this.message = "error -> " + entry + " is not seen\n";
@@ -69,16 +117,17 @@ public class Command {
                     //this.setRating(rate);
                     //nope setRated(true);
                     user.getRatedMovies().add(entry);
-                    movie.getRatings().put(rate, userName);
-                    this.message = "success -> " + entry + " was rated with " + rate + " by " + user.getUsername() + "\n";
+                    movie.getRatings().put(this.grade, userName);
+                    this.message = "success -> " + entry + " was rated with " +
+                            this.grade + " by " + user.getUsername() + "\n";
                 }
             }
         }
 
     }
-    public void rate(Show show, User user, double rate, int season) {
+    public void rate(Show show, User user) {
 
-        if(rate != 0 && season != 0) {
+        if(this.grade != 0 && season != 0) {
             String entry = show.getName();
             String userName = user.getUsername();
 
@@ -102,14 +151,17 @@ public class Command {
             currSeason.setRated(true);*/
                 if (currSeason.isRated() == false)
                     currSeason.setRated(true);
-                currSeason.getRatings().put(rate, userName);
-                this.message = "success -> " + entry + " was rated with " + rate + " by " + user.getUsername() + "\n";
+                currSeason.getRatings().put(this.grade, userName);
+                this.message = "success -> " + entry + " was rated with " + this.grade + " by " + user.getUsername() + "\n";
             }
         }
 
     }
     //only for view and favourite
+    // nu e buna ptc o sa am probleme din cauza ipului video
     public void execute(User user, Video video, String type){
+
+
         if(user != null && video != null) {
             //if urile sunt viata mea
             if(type.equals(Constants.VIEW))

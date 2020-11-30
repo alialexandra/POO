@@ -15,13 +15,13 @@ public class Actor {
     private String name;
     private String career;
     private List<String> filmography;
-    private Map<String, Integer> awards;// nu stiu cum sa fac cu Actor Awards
+    private Map<ActorsAwards, Integer> awards;// nu stiu cum sa fac cu Actor Awards
     private double average;
     private int noAwards;
 
     public Actor(String name, String career,
                  List<String> filmography,
-                Map<String, Integer> awards){
+                Map<ActorsAwards, Integer> awards){
         this.name = name;
         this.awards = awards;
         this.career = career;
@@ -55,11 +55,11 @@ public class Actor {
         this.filmography = filmography;
     }
 
-    public Map<String, Integer> getAwards() {
+    public Map<ActorsAwards, Integer> getAwards() {
         return awards;
     }
 
-    public void setAwards(Map<String, Integer> awards) {
+    public void setAwards(Map<ActorsAwards, Integer> awards) {
         this.awards = awards;
     }
 

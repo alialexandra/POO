@@ -15,8 +15,8 @@ public class Movie  extends Video {
 
 
 
-    public Movie(int id, String name, int year, List<String> genres, List<String> cast, int duration) {
-        super(id, name, year, genres, cast);
+    public Movie(String name, int year, List<String> genres, List<String> cast, int duration) {
+        super(name, year, genres, cast);
         this.duration = duration;
     }
 
@@ -52,6 +52,10 @@ public class Movie  extends Video {
         String viewed = this.getName();
         String message;
 
+        if(user == null){
+            message = "User doesn't exists.";
+        }
+
 
         if (user.getHistory().containsKey(viewed)){
             user.getHistory().put(viewed, user.getHistory().get(viewed) + 1);
@@ -82,7 +86,7 @@ public class Movie  extends Video {
             }
             average /= ratings.size();
         }
-        //ssuper.setRatingAverage(average);
+        super.setRatingAverage(average);
         return average;
     }
 

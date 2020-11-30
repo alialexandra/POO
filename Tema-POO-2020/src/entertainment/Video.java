@@ -13,7 +13,7 @@ public  abstract class Video {
      */
 
     // id to remember the order of the movies
-    private int id;
+
     private String name;
     private int year;
     private List<String> genres;
@@ -23,12 +23,9 @@ public  abstract class Video {
     private int noViews;
 
 
-
-
-
-    public Video(int id, String name, int year,
+    public Video(String name, int year,
                  List<String> genres, List<String> cast){
-        this.id = id;
+
         this.name = name;
         this.year = year;
         this.genres = genres;
@@ -36,14 +33,6 @@ public  abstract class Video {
         ratingAverage = 0;// intial
         noFavorite = 0;
         noViews = 0;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

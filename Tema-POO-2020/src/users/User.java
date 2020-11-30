@@ -14,13 +14,13 @@ public class User {
     // nu, mai mult la filme
     private String username;
     private String sub;
-    private Map<String, Integer> history; // la initializare vreau sa l fac de tip LinkedHashMap ca sa mi mentina ordinea
+    private LinkedHashMap<String, Integer> history; // la initializare vreau sa l fac de tip LinkedHashMap ca sa mi mentina ordinea
     private List<String> favourite;
     // acum asta e useless off... viata...
      private List<String> ratedMovies = new ArrayList<>();
 
 
-    public User(String username, String sub, Map<String, Integer> history,
+    public User(String username, String sub, LinkedHashMap<String, Integer> history,
                 List<String> favourite) {
         this.username = username;
         this.sub = sub;
@@ -44,11 +44,11 @@ public class User {
         this.sub = sub;
     }
 
-    public Map<String, Integer> getHistory() {
+    public LinkedHashMap<String, Integer> getHistory() {
         return history;
     }
 
-    public void setHistory(Map<String, Integer> history) {
+    public void setHistory(LinkedHashMap<String, Integer> history) {
         this.history = history;
     }
 

@@ -3,6 +3,7 @@ package main;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
+import fileio.ActionInputData;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -70,8 +72,24 @@ public final class Main {
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
 
-        //TODO add here the entry point to your implementation
-        // ce inseamna asta *cry*
+
+        Reader reader = new Reader();
+
+        reader.parseAction(input.getCommands());
+        reader.parseActors(input.getActors());
+        reader.parseUsers(input.getUsers());
+        reader.parseMovie(input.getMovies());
+        reader.parseShows(input.getSerials());
+
+        Runner run = new Runner(reader.getActors(),
+                reader.getUsers(),
+                reader.getMovies(),
+                reader.getShows(),
+                reader.getQueries(),
+                reader.getCommands(),
+                reader.getRecommends());
+
+
 
 
         fileWriter.closeJSON(arrayResult);

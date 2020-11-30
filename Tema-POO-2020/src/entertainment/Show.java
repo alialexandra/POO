@@ -12,11 +12,11 @@ public class Show extends Video {
     //private Map<Season, Double> ratings; // ratings pe sezon
 
 
-    public Show(int id, String name, int year, List<String> genres, List<String> cast,
-                int noSeasons, boolean rated) {
-        super(id, name, year, genres, cast);
+    public Show(String name, int year, List<String> genres, List<String> cast,
+                int noSeasons, ArrayList<Season> seasons) {
+        super(name, year, genres, cast);
         this.noSeasons = noSeasons;
-        this.seasons = new ArrayList<>(noSeasons);
+        this.seasons = seasons;
 
     }
 
@@ -114,7 +114,8 @@ public class Show extends Video {
             }
             average /= this.noSeasons;
         }
-
+        // inca ma gandesc daca le mai las
+        super.setRatingAverage(average);
         return average;
     }
 
