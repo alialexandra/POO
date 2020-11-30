@@ -243,7 +243,7 @@ public class Runner {
 
         List<Video> result = new ArrayList<>();
         //
-        if (videoQuery.getCriteria().equals(Constants.RATING)) {
+        if (videoQuery.getCriteria().equals(Constants.RATINGS)) {
 
             if (q.getObjectType().equals(Constants.MOVIES)){
                 result = videoQuery.ratingsList(this.movies);
@@ -260,10 +260,10 @@ public class Runner {
         else if (videoQuery.getCriteria().equals(Constants.FAVORITE)){
 
             if (q.getObjectType().equals(Constants.MOVIES)){
-                result = videoQuery.favoriteList(this.movies);
+                result = videoQuery.favoriteList(this.movies, this.users);
             }
             if (q.getObjectType().equals(Constants.SHOWS)){
-                result = videoQuery.favoriteList(this.shows);
+                result = videoQuery.favoriteList(this.shows, this.users);
             }
             String message = "Query result: " + convertVideoToString(result);
             this.outMessage.put(q.getId(), message);
@@ -280,10 +280,10 @@ public class Runner {
         }
         else if (videoQuery.getCriteria().equals(Constants.MOST)){
             if (q.getObjectType().equals(Constants.MOVIES)){
-                result = videoQuery.mostViewedList(this.movies);
+                result = videoQuery.mostViewedList(this.movies, this.users);
             }
             if (q.getObjectType().equals(Constants.SHOWS)){
-                result = videoQuery.mostViewedList(this.shows);
+                result = videoQuery.mostViewedList(this.shows, this.users);
             }
             String message = "Query result: " + convertVideoToString(result);
             this.outMessage.put(q.getId(), message);

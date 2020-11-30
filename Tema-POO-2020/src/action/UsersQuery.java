@@ -23,6 +23,12 @@ public class UsersQuery extends Query{
 
         List<User> sorted = new ArrayList<>();
 
+        for (User user: users){
+            if (user.getRated().size() != 0){
+                sorted.add(user);
+            }
+        }
+
         UserComparator cmp = new UserComparator();
 
         if (this.getSortCriteria().equals("asc")){

@@ -128,7 +128,7 @@ public  abstract class Video {
            if (user.getFavourite().contains(newEntry)) {
                message = "success -> "+ newEntry +" was added as favourite";
                // nu sunt sigura
-               this.noFavorite++;
+              // this.noFavorite++;
            }
         }
         return message;

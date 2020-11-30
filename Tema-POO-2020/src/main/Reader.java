@@ -141,8 +141,8 @@ public class Reader {
                 showInput) {
             this.shows.add(new Show(show.getTitle(),
                     show.getYear(),
-                    show.getCast(),
                     show.getGenres(),
+                    show.getCast(),
                     show.getNumberSeason(),
                     show.getSeasons()
             ));

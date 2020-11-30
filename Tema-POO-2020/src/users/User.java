@@ -1,6 +1,8 @@
 package users;
 
 
+import entertainment.Video;
+
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Map;
@@ -66,5 +68,9 @@ public class User {
 
     public ArrayList<String> getRated() {
         return rated;
+    }
+
+    public void addRated(String v){
+        this.rated.add(v);
     }
 }

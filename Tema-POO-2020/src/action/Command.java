@@ -116,7 +116,7 @@ public class Command {
                 } else {
                     //this.setRating(rate);
                     //nope setRated(true);
-                    user.getRated().add(entry);
+                    user.addRated(entry);
                     movie.setRating(userName, this.grade);
                     this.message = "success -> " + entry + " was rated with " +
                             this.grade + " by " + user.getUsername();
@@ -153,7 +153,7 @@ public class Command {
                 if (currSeason.isRated() == false)
                     currSeason.setRated(true);
                 currSeason.setRating(userName, this.grade);
-                user.getRated().add(show.getName());
+                user.addRated(entry);
                 this.message = "success -> " + entry + " was rated with " + this.grade + " by " + user.getUsername();
 
             }

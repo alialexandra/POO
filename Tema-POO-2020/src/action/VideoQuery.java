@@ -7,9 +7,7 @@ import entertainment.Show;
 import entertainment.Video;
 import users.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class VideoQuery extends Query {
@@ -23,10 +21,20 @@ public class VideoQuery extends Query {
 
     public List<Video> ratingsList(List<Video> videos){
 
-
-        List<Video> sorted = videos;
+        List<Video> sorted = new ArrayList<>();
         for (Video v: sorted) {
             v.setRatingAverage(v.computeAvgRating());
+
+            String genre = super.getFilter().get(1).get(0);
+            String year = super.getFilter().get(0).get(0);
+
+
+            if (v.getGenres().contains(genre) &&
+                    String.valueOf(v.getYear()).equals(year)&&
+                    v.getRatingAverage() != 0)
+            {
+                sorted.add(v);
+            }
         }
 
         //daca am timp il rezolv
@@ -48,15 +56,42 @@ public class VideoQuery extends Query {
         return sorted;
     }
 
-    // varinata diferita pentru favorite, in sensul ca
-    // incrementez de fiecare data cand un video este adaugat cu succes la
-    // lista de favorites a unui user
+    private void computeFavFreq(Video v, List<User> users){
+        int counts = 0;
 
-    public List<Video> favoriteList(List<Video> videos) {
+        for (User user:
+             users) {
+            for (String s:
+                    user.getFavourite()) {
+                if (v.getName().equals(s)){
+                    counts++;
+                }
+            }
+        }
+
+        v.setNoFavorite(counts);
+    }
+    // done
+    public List<Video> favoriteList(List<Video> videos, List<User> users) {
 
         //sortare dupa cat
-        List<Video> sorted = videos;
 
+        List<Video> sorted = new ArrayList<>();
+
+        for (Video v:
+             videos) {
+            computeFavFreq(v, users);
+            String genre = super.getFilter().get(1).get(0);
+            String year = super.getFilter().get(0).get(0);
+
+
+            if (v.getGenres().contains(genre) &&
+                String.valueOf(v.getYear()).equals(year)&&
+                v.getNoFavorite() != 0)
+            {
+                sorted.add(v);
+            }
+        }
 
         VideoFavComparator cmp = new VideoFavComparator();
 
@@ -67,7 +102,8 @@ public class VideoQuery extends Query {
             Collections.sort(sorted, Collections.reverseOrder(cmp));
 
         //List<String> firstNElementsList = list.stream().limit(n).collect(Collectors.toList())
-        if(this.getNumber() < sorted.size()){// <= ??
+        if(super.getNumber() < sorted.size()){// <= ??
+
             List<Video> first;
             first = sorted.stream().limit(this.getNumber()).collect(Collectors.toList());
             return first;
@@ -77,10 +113,40 @@ public class VideoQuery extends Query {
     }
 
 
+    private void computeViewFreq(Video v, List<User> users){
+        int counts = 0;
 
-    public List<Video> mostViewedList(List<Video> videos){
+        for (User user:
+                users) {
 
-        List<Video> sorted = videos;
+            for (Map.Entry<String, Integer> entry : user.getHistory().entrySet()) {
+                if (v.getName().equals(entry.getKey())){
+                    counts += entry.getValue();
+                }
+            }
+        }
+
+        v.setNoViews(counts);
+    }
+
+    public List<Video> mostViewedList(List<Video> videos, List<User> users){
+
+        List<Video> sorted = new ArrayList<>();
+
+        for (Video v:
+             videos) {
+            computeViewFreq(v,users);
+
+            String genre = super.getFilter().get(1).get(0);
+            String year = super.getFilter().get(0).get(0);
+
+            if (v.getGenres().contains(genre) &&
+                    String.valueOf(v.getYear()).equals(year) &&
+                    v.getNoViews() != 0)
+            {
+                sorted.add(v);
+            }
+        }
 
         ViewsComparator cmp = new ViewsComparator();
 
@@ -106,7 +172,14 @@ public class VideoQuery extends Query {
         for (Video v:
              videos) {
             v.setDurationVideo(v.computeDuration());
-            sorted.add(v);
+            String genre = super.getFilter().get(1).get(0);
+            String year = super.getFilter().get(0).get(0);
+
+            if (v.getGenres().contains(genre) &&
+                    String.valueOf(v.getYear()).equals(year))
+            {
+                sorted.add(v);
+            }
         }
 
         DurationComp cmp = new DurationComp();
