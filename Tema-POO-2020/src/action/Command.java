@@ -112,7 +112,7 @@ public class Command {
 
                 // nu e binee
                 else if (movie.getRatings().containsValue(userName)) {
-                    this.message = "error -> " + entry + " is already rated";
+                    this.message = "error -> " + entry + " has been already rated";
                 } else {
                     //this.setRating(rate);
                     //nope setRated(true);

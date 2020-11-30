@@ -115,9 +115,19 @@ public class Show extends Video {
             average /= this.noSeasons;
         }
         // inca ma gandesc daca le mai las
-        super.setRatingAverage(average);
+        setRatingAverage(average);
         return average;
     }
 
+    @Override
+    public int computeDuration() {
+        int d = 0;
+        for (Season s:
+             this.seasons) {
+            d += s.getDuration();
+        }
+
+        return d;
+    }
 }
 

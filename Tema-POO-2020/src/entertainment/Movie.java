@@ -15,6 +15,7 @@ public class Movie  extends Video {
 
 
 
+
     public Movie(String name, int year, List<String> genres, List<String> cast, int duration) {
         super(name, year, genres, cast);
         this.duration = duration;
@@ -36,45 +37,6 @@ public class Movie  extends Video {
         this.ratings = ratings;
     }
 
-    /*public boolean isRated() {
-        return rated;
-    }
-
-    public void setRated(boolean rated) {
-        this.rated = rated;
-    }*/
-
-/*
-    @Override
-    public String view(User user) {
-        */
-/**
-         * get the movie to be viewed
-         * *//*
-
-        String viewed = this.getName();
-        String message;
-
-        if(user == null){
-            message = "User doesn't exists.";
-        }
-
-
-        if (user.getHistory().containsKey(viewed)){
-            user.getHistory().put(viewed, user.getHistory().get(viewed) + 1);
-
-        }
-        else {
-            user.getHistory().putIfAbsent(viewed, 1);
-        }
-        //success -> Brexit: The Uncivil War was viewed with total views of 1
-        int no  = user.getHistory().get(viewed);
-
-        message = "success -> " + viewed +  " was viewed with total views of " + no + "\n";
-        return message;
-    }
-*/
-
 
     // compute average rating for movies
     @Override
@@ -90,11 +52,14 @@ public class Movie  extends Video {
             }
             average /= ratings.size();
         }
-        super.setRatingAverage(average);
+        setRatingAverage(average);
         return average;
     }
 
-
+    @Override
+    public int computeDuration() {
+        return this.duration;
+    }
 }
 
 

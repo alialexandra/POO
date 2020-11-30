@@ -1,8 +1,6 @@
 package main;
 
-import action.Command;
-import action.Query;
-import action.Recommend;
+import action.*;
 import actor.Actor;
 import common.Constants;
 import entertainment.Movie;
@@ -160,6 +158,163 @@ public class Runner {
         }
     }
 
+
+    private ArrayList<String> convertActorToString(List<Actor> actorsN){
+        ArrayList<String> names = new ArrayList<>();
+
+        for (Actor a:
+             actorsN) {
+            names.add(a.getName());
+        }
+
+        return names;
+    }
+
+    private ArrayList<String> convertVideoToString(List<Video> videos){
+        ArrayList<String> names = new ArrayList<>();
+
+        for (Video v:
+                videos) {
+            names.add(v.getName());
+        }
+
+        return names;
+    }
+
+    private ArrayList<String> convertUserToString(List<User> usersN){
+        ArrayList<String> names = new ArrayList<>();
+
+        for (User u:
+                usersN) {
+            names.add(u.getUsername());
+        }
+        return names;
+    }
+
+    private void executeActorQuery(Query q){
+
+        ActorsQuery actorsQuery = new ActorsQuery(
+                q.getId(),
+                q.getNumber(),
+                q.getObjectType(),
+                q.getSortCriteria(),
+                q.getCriteria(),
+                q.getFilter()
+        );
+
+        List<Actor> result = new ArrayList<>();
+
+        if (actorsQuery.getCriteria().equals(Constants.AVERAGE)) {
+            List<Video> videos = new ArrayList<>();
+            videos.addAll(this.movies);
+            videos.addAll(this.shows);
+            result = actorsQuery.averageList(this.actors, videos);
+            //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
+
+            String message = "Query result: " + convertActorToString(result);
+            this.outMessage.put(q.getId(), message);
+
+        }
+        else if (actorsQuery.getCriteria().equals(Constants.AWARDS)){
+            result = actorsQuery.awardsList(this.actors);
+            //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
+            String message = "Query result: " + convertActorToString(result);
+            this.outMessage.put(q.getId(), message);
+        }
+        else if (actorsQuery.getCriteria().equals(Constants.FILTER_DESCRIPTIONS)){
+            result = actorsQuery.filterList(this.actors);
+            //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
+            String message = "Query result: " + convertActorToString(result);
+            this.outMessage.put(q.getId(), message);
+        }
+    }
+
+    private void executeVideoQuery(Query q){
+
+        VideoQuery videoQuery = new VideoQuery(
+                q.getId(),
+                q.getNumber(),
+                q.getObjectType(),
+                q.getSortCriteria(),
+                q.getCriteria(),
+                q.getFilter()
+        );
+
+        List<Video> result = new ArrayList<>();
+        //
+        if (videoQuery.getCriteria().equals(Constants.RATING)) {
+
+            if (q.getObjectType().equals(Constants.MOVIES)){
+                result = videoQuery.ratingsList(this.movies);
+            }
+            if (q.getObjectType().equals(Constants.SHOWS)){
+                result = videoQuery.ratingsList(this.shows);
+            }
+
+
+            String message = "Query result: " + convertVideoToString(result);
+            this.outMessage.put(q.getId(), message);
+
+        }
+        else if (videoQuery.getCriteria().equals(Constants.FAVORITE)){
+
+            if (q.getObjectType().equals(Constants.MOVIES)){
+                result = videoQuery.favoriteList(this.movies);
+            }
+            if (q.getObjectType().equals(Constants.SHOWS)){
+                result = videoQuery.favoriteList(this.shows);
+            }
+            String message = "Query result: " + convertVideoToString(result);
+            this.outMessage.put(q.getId(), message);
+        }
+        else if (videoQuery.getCriteria().equals(Constants.LONGEST)){
+            if (q.getObjectType().equals(Constants.MOVIES)){
+                result = videoQuery.longestList(this.movies);
+            }
+            if (q.getObjectType().equals(Constants.SHOWS)){
+                result = videoQuery.longestList(this.shows);
+            }
+            String message = "Query result: " + convertVideoToString(result);
+            this.outMessage.put(q.getId(), message);
+        }
+        else if (videoQuery.getCriteria().equals(Constants.MOST)){
+            if (q.getObjectType().equals(Constants.MOVIES)){
+                result = videoQuery.mostViewedList(this.movies);
+            }
+            if (q.getObjectType().equals(Constants.SHOWS)){
+                result = videoQuery.mostViewedList(this.shows);
+            }
+            String message = "Query result: " + convertVideoToString(result);
+            this.outMessage.put(q.getId(), message);
+        }
+
+
+
+    }
+
+    private void executeUserQuery(Query q) {
+
+
+            UsersQuery usersQuery = new UsersQuery(
+                    q.getId(),
+                    q.getNumber(),
+                    q.getObjectType(),
+                    q.getSortCriteria(),
+                    q.getCriteria(),
+                    q.getFilter()
+            );
+
+            List<User> result = new ArrayList<>();
+
+                result = usersQuery.ratings(this.users);
+                //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
+
+                String message = "Query result: " + convertUserToString(result);
+                this.outMessage.put(q.getId(), message);
+
+    }
+
+
     public void executeActions(List<ActionInputData> actions) {
 
         for (ActionInputData a:
@@ -170,6 +325,23 @@ public class Runner {
                 executeCommand(c);
                 // dupa ce a executat comanda bye-bye
                 commands.remove(c);
+            }
+            // daca avem un query:
+            // mor aici frate, nu mai pot
+            if (a.getActionType().equals(Constants.QUERY)){
+                Query q = queries.get(0);
+                if (q.getObjectType().equals(Constants.ACTORS)){
+                    executeActorQuery(q);
+                }
+                else if (q.getObjectType().equals(Constants.MOVIES) ||
+                        q.getObjectType().equals(Constants.SHOWS)){
+                    executeVideoQuery(q);
+                }
+                else if (q.getObjectType().equals(Constants.USERS)){
+                    executeUserQuery(q);
+                }
+                // probabil un caz de query invalid
+                queries.remove(q);
             }
         }
     }

@@ -7,6 +7,7 @@ import comparators.NameComparator;
 import comparators.RatingComparator;
 import entertainment.Movie;
 import entertainment.Show;
+import entertainment.Video;
 import utils.Utils;
 
 import java.util.*;
@@ -22,13 +23,15 @@ public class ActorsQuery extends Query{
     }
 
     // average for actors - finished
-    public List<Actor> average(List<Actor>actors, List<Movie>movies, List<Show> shows){
+
+    public List<Actor> averageList(List<Actor>actors, List<Video> videos){
         // better safe than sorry
         List<Actor> sortActors = actors;
 
+
         for (Actor actor:
                 sortActors) {
-            actor.computeAverage(movies, shows);
+            actor.computeAverage(videos);
         }
 
 
@@ -50,7 +53,7 @@ public class ActorsQuery extends Query{
         return sortActors;
     }
 
-    public List<Actor> getAwarded(List<Actor> actors) {
+    public List<Actor> awardsList(List<Actor> actors) {
 
         List<String> awards = super.getFilter().get(3);// sau 3
         List<Actor> sortActors = new ArrayList<>();
@@ -79,13 +82,12 @@ public class ActorsQuery extends Query{
 
     }
 
-    public List<Actor> getFiltered(List<Actor> actors){
+    public List<Actor> filterList(List<Actor> actors){
 
         Map<String, Boolean> keyWordsFreq = new LinkedHashMap<>();
 
         List<String> keyWords = super.getFilter().get(2);
         List<Actor> sorted = new ArrayList<>();
-//Pattern.compile(Pattern.quote(wantedStr), Pattern.CASE_INSENSITIVE).matcher(source).find();
 
         for (Actor actor: actors) {
             for (String s : keyWords) {

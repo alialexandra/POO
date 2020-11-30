@@ -3,7 +3,9 @@ package actor;
 import entertainment.Movie;
 import entertainment.Season;
 import entertainment.Show;
+import entertainment.Video;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,9 +84,28 @@ public class Actor {
     // metode pentru actori
     // sortare dupa rating
 
-    public void computeAverage(List<Movie> movies, List<Show> shows){
 
-        double averageMovie = 0, averageShow = 0;
+    private List<Video> videoList(List<String> names, List<Video> videos){
+
+        List<Video> getVideos = new ArrayList<>();
+
+        for (String name:
+             names) {
+            for (Video v:
+                 videos) {
+                if (v.getName().equals(name)){
+                    getVideos.add(v);
+                }
+            }
+        }
+
+        return getVideos;
+
+    }
+
+    public void computeAverage(List<Video> videos) {
+
+       /* double averageMovie = 0, averageShow = 0;
         double average = 0;
         int movieCount = 0, showCount = 0;
 
@@ -126,6 +147,20 @@ public class Actor {
         {
             this.average = average/(movieCount + showCount);
         }
-    }
+    }*/
+
+        List<Video> result = videoList(this.filmography, videos);
+
+        double average = 0;
+        int count = 0;
+
+        for (Video v:
+             result) {
+            average += v.computeAvgRating();
+            count++;
+        }
+        if (count != 0)
+            this.average = average/count;
+        }
 
 }

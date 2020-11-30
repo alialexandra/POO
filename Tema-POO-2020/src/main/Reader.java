@@ -43,13 +43,7 @@ public class Reader {
         this.users = users;
     }
 
-    public List<Video> getVideos() {
-        return movies;
-    }
 
-    public void setVideos(List<Video> movies) {
-        this.movies = movies;
-    }
 
     public List<Query> getQueries() {
         return queries;

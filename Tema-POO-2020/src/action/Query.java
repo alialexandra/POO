@@ -15,7 +15,7 @@ public  class Query {
 
     // id ul pentru actiunea
     private int id;
-    private String objectType;
+    private String objectType;//actors, movies, users, shows
     private String sortCriteria;//asc sau desc
     private String criteria;
     // sunt doar 4 filtere, vad eu ce se intampla
@@ -32,6 +32,7 @@ public  class Query {
         this.sortCriteria = sortCriteria;
         this.criteria = criteria;
         this.filter = filter;
+        this.message = null;
     }
 
     public int getId() {
@@ -83,6 +84,8 @@ public  class Query {
     }
 
     // add specific methods
+
+
 
 
 }

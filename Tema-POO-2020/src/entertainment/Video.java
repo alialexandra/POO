@@ -21,6 +21,7 @@ public  abstract class Video {
     private double ratingAverage;
     private int noFavorite;
     private int noViews;
+    private int durationVideo;
 
 
     public Video(String name, int year,
@@ -33,6 +34,7 @@ public  abstract class Video {
         ratingAverage = 0;// intial
         noFavorite = 0;
         noViews = 0;
+        durationVideo = 0;
     }
 
     public String getName() {
@@ -91,6 +93,14 @@ public  abstract class Video {
         this.noViews = noViews;
     }
 
+    public int getDurationVideo() {
+        return durationVideo;
+    }
+
+    public void setDurationVideo(int durationVideo) {
+        this.durationVideo = durationVideo;
+    }
+
     /**
      * @param user
      * add a video to the favourites for user
@@ -143,10 +153,12 @@ public  abstract class Video {
         //success -> Brexit: The Uncivil War was viewed with total views of 1
         int no  = user.getHistory().get(viewed);
 
+        this.noViews++;
         message = "success -> " + viewed +  " was viewed with total views of " + no;
         return message;
     }
 
     public abstract double computeAvgRating();
+    public abstract int computeDuration();
 
 }
