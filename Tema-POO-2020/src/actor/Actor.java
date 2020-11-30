@@ -152,15 +152,26 @@ public class Actor {
         List<Video> result = videoList(this.filmography, videos);
 
         double average = 0;
-        int count = 0;
+        double count = 0;
 
         for (Video v:
              result) {
-            average += v.computeAvgRating();
-            count++;
+            if (v.computeAvgRating() != 0){
+                average += v.computeAvgRating();
+
+                count++;
+            }
+
         }
         if (count != 0)
             this.average = average/count;
         }
 
+    @Override
+    public String toString() {
+        return "Actor{" +
+                "name='" + name + '\'' +
+                ", average = " + this.average +
+                '}';
+    }
 }

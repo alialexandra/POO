@@ -11,7 +11,7 @@ public class Movie  extends Video {
     //private boolean rated; // asta e in plus
     // lista a toate ratingurile primite de un film de la un anumit user
     //name ul userului care a dat ratingul
-    private Map<Double, String> ratings = new LinkedHashMap<>();
+    private Map<String, Double> ratings = new LinkedHashMap<>();
 
 
 
@@ -29,28 +29,36 @@ public class Movie  extends Video {
         this.duration = duration;
     }
 
-    public Map<Double, String> getRatings() {
+    public Map<String, Double> getRatings() {
         return ratings;
     }
 
-    public void setRatings(Map<Double, String> ratings) {
+    public void setRatings(Map<String, Double> ratings) {
         this.ratings = ratings;
     }
+
+    public void setRating(String name, double grade){
+        this.ratings.put(name, grade);
+    }
+
+
 
 
     // compute average rating for movies
     @Override
     public double computeAvgRating() {
         double average = 0;
+        double count = 0;
 
         if(!(ratings.isEmpty())) {
 
-            for (Double d: ratings.keySet()){
+            for (Double d: ratings.values()){
                 if(d != 0){
                     average += d;
+                    count++;
                 }
             }
-            average /= ratings.size();
+            average /= count;
         }
         setRatingAverage(average);
         return average;

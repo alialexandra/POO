@@ -28,7 +28,7 @@ public final class Season {
     // vad la citire daca ramane asa, nu stiu ce sa zic sincer
     //private double rating;
     private boolean rated;
-    private Map<Double, String> ratings = new LinkedHashMap<>();
+    private Map<String, Double> ratings = new LinkedHashMap<>();
 
     public Season(final int currentSeason, final int duration) {
         this.currentSeason = currentSeason;
@@ -65,12 +65,16 @@ public final class Season {
         return currentSeason;
     }
 
-    public void setRatings(Map<Double, String> ratings) {
+    public void setRatings(Map<String, Double> ratings) {
         this.ratings = ratings;
     }
 
-    public Map<Double, String> getRatings() {
+    public Map<String, Double> getRatings() {
         return ratings;
+    }
+
+    public void setRating(String name, double grade){
+        this.ratings.put(name, grade);
     }
 
     @Override

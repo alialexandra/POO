@@ -28,6 +28,7 @@ public final class Main {
     private Main() {
     }
 
+
     /**
      * Call the main checker and the coding style checker
      * @param args from command line

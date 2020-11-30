@@ -46,48 +46,7 @@ public class Show extends Video {
     }
 
 
-   /* @Override
-    public String view(User user) {
 
-        String message = null;
-
-        String viewed = this.getName();
-        Set<Integer> values = new HashSet<>(seen.values());
-
-        // extra from the method for movies
-        // I have to check if all the seasons have been seen
-        // with that exact number I want to increase
-
-        if (user.getHistory().containsKey(viewed)) {
-
-            int noViews = user.getHistory().get(viewed);
-
-            // ma gandesc ca deja sezoanele trebuie sa fie marcate ca vazute
-            // o sa fie distractie si cu astea
-            // cel mai probabil o sa am nevoie de o metoda
-            // de traverse pentru map care sa mi incrementeze numarul de vizionari
-            if(values.size() == 1 &&
-                this.seen.containsValue(noViews + 1))
-                user.getHistory().put(viewed, user.getHistory().get(viewed) + 1);
-        }
-        else{
-            // if the show has never been seen
-            // mda nu stiu daca o sa setez eu sa fie vazute sezoanele
-            // sau mi se cere in input
-            // && this.getSeen().containsValue(0) - sa fie pe 0 , dar cred
-            // ca e redundanta verifcarea asta
-            // oare trebuie sa adaug eu si 1 la vazut toate sezoanele...
-            if(values.size() == 1
-             && this.getSeen().containsValue(1)) {
-                user.getHistory().putIfAbsent(viewed, 1);
-                int no  = user.getHistory().get(viewed);
-                message = "success -> " + viewed +  " was viewed with total views of " + no + "\n";
-
-            }
-        }
-
-        return message;
-    }*/
 
     @Override
     public double computeAvgRating() {
@@ -107,7 +66,7 @@ public class Show extends Video {
             for (Season s:
                  this.seasons) {
                 if (!(s.getRatings().isEmpty())){
-                    for (Double d: s.getRatings().keySet()){
+                    for (Double d: s.getRatings().values()){
                         average += d;
                     }
                 }

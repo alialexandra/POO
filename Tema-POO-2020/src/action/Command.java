@@ -111,15 +111,16 @@ public class Command {
                 }
 
                 // nu e binee
-                else if (movie.getRatings().containsValue(userName)) {
+                else if (movie.getRatings().containsKey(userName)) {
                     this.message = "error -> " + entry + " has been already rated";
                 } else {
                     //this.setRating(rate);
                     //nope setRated(true);
                     user.getRated().add(entry);
-                    movie.getRatings().put(this.grade, userName);
+                    movie.setRating(userName, this.grade);
                     this.message = "success -> " + entry + " was rated with " +
                             this.grade + " by " + user.getUsername();
+
                 }
             }
         }
@@ -144,16 +145,17 @@ public class Command {
             }
 
             // nu stiu daca merge... :(
-            else if (currSeason.getRatings().containsValue(userName)) {
+            else if (currSeason.getRatings().containsKey(userName)) {
                 this.message = "error -> " + entry + " is already rated";
             } else {
             /*currSeason.setRating(rate);
             currSeason.setRated(true);*/
                 if (currSeason.isRated() == false)
                     currSeason.setRated(true);
-                currSeason.getRatings().put(this.grade, userName);
+                currSeason.setRating(userName, this.grade);
                 user.getRated().add(show.getName());
                 this.message = "success -> " + entry + " was rated with " + this.grade + " by " + user.getUsername();
+
             }
         }
 

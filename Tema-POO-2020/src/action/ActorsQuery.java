@@ -26,13 +26,18 @@ public class ActorsQuery extends Query{
 
     public List<Actor> averageList(List<Actor>actors, List<Video> videos){
         // better safe than sorry
-        List<Actor> sortActors = actors;
+        List<Actor> sortActors = new ArrayList<>();
 
 
         for (Actor actor:
-                sortActors) {
+                actors) {
             actor.computeAverage(videos);
+            if (actor.getAverage() != 0){
+                sortActors.add(actor);
+            }
         }
+
+
 
 
         RatingComparator cmp = new RatingComparator();

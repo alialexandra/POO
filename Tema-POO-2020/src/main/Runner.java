@@ -212,6 +212,7 @@ public class Runner {
             //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
 
             String message = "Query result: " + convertActorToString(result);
+            //String message = "Query result: " + result;
             this.outMessage.put(q.getId(), message);
 
         }
