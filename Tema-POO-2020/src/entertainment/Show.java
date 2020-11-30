@@ -7,8 +7,8 @@ import java.util.*;
 public class Show extends Video {
 
     private int noSeasons;
-    private List<Season> seasons;
-    private Map<Season, Integer> seen;
+    private ArrayList<Season> seasons;
+    private Map<Season, Integer> seen = new LinkedHashMap<>();
     //private Map<Season, Double> ratings; // ratings pe sezon
 
 
@@ -28,11 +28,11 @@ public class Show extends Video {
         this.noSeasons = noSeasons;
     }
 
-    public List<Season> getSeasons() {
+    public ArrayList<Season> getSeasons() {
         return seasons;
     }
 
-    public void setSeasons(List<Season> seasons) {
+    public void setSeasons(ArrayList<Season> seasons) {
         this.seasons = seasons;
     }
 
@@ -46,7 +46,7 @@ public class Show extends Video {
     }
 
 
-    @Override
+   /* @Override
     public String view(User user) {
 
         String message = null;
@@ -67,7 +67,7 @@ public class Show extends Video {
             // cel mai probabil o sa am nevoie de o metoda
             // de traverse pentru map care sa mi incrementeze numarul de vizionari
             if(values.size() == 1 &&
-                this.getSeen().containsValue(noViews + 1))
+                this.seen.containsValue(noViews + 1))
                 user.getHistory().put(viewed, user.getHistory().get(viewed) + 1);
         }
         else{
@@ -87,7 +87,7 @@ public class Show extends Video {
         }
 
         return message;
-    }
+    }*/
 
     @Override
     public double computeAvgRating() {

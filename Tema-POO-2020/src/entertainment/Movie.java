@@ -44,11 +44,14 @@ public class Movie  extends Video {
         this.rated = rated;
     }*/
 
+/*
     @Override
     public String view(User user) {
-        /**
+        */
+/**
          * get the movie to be viewed
-         * */
+         * *//*
+
         String viewed = this.getName();
         String message;
 
@@ -70,6 +73,7 @@ public class Movie  extends Video {
         message = "success -> " + viewed +  " was viewed with total views of " + no + "\n";
         return message;
     }
+*/
 
 
     // compute average rating for movies

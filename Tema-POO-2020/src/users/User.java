@@ -17,7 +17,7 @@ public class User {
     private LinkedHashMap<String, Integer> history; // la initializare vreau sa l fac de tip LinkedHashMap ca sa mi mentina ordinea
     private List<String> favourite;
     // acum asta e useless off... viata...
-     private List<String> ratedMovies = new ArrayList<>();
+     private ArrayList<String> rated = new ArrayList<>();
 
 
     public User(String username, String sub, LinkedHashMap<String, Integer> history,
@@ -60,11 +60,11 @@ public class User {
         this.favourite = favourite;
     }
 
-    public void setRatedMovies(List<String> ratedMovies) {
-        this.ratedMovies = ratedMovies;
+    public void setRated(ArrayList<String> ratedMovies) {
+        this.rated = ratedMovies;
     }
 
-    public List<String> getRatedMovies() {
-        return ratedMovies;
+    public ArrayList<String> getRated() {
+        return rated;
     }
 }

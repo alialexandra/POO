@@ -22,6 +22,7 @@ public  class Query {
     private List<List<String>> filter;// keywords pentru filtrare
     private int number;// daca e dat un numar sau ceva
     //TODO: add message to be written in out?? idk
+    private String message;
 
 
     public Query(int id, int number, String objectType, String sortCriteria, String criteria, List<List<String>> filter) {

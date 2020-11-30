@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -90,6 +91,12 @@ public final class Main {
                 reader.getRecommends());
 
 
+        run.executeActions(input.getCommands());
+
+        for (Map.Entry<Integer,String> entry : run.getOutMessage().entrySet())
+        {
+            arrayResult.add(fileWriter.writeFile(entry.getKey(), null, entry.getValue()));
+        }
 
 
         fileWriter.closeJSON(arrayResult);

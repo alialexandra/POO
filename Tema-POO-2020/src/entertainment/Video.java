@@ -107,16 +107,16 @@ public  abstract class Video {
         String message = null;
 
         if(user.getFavourite().contains(newEntry)) {
-            message = "error -> " + newEntry +" is already in favourite list\n";
+            message = "error -> " + newEntry +" is already in favourite list";
         }
         else if(!(user.getHistory().containsKey(newEntry))) {
-            message = "error -> " + newEntry +" is not seen\n";
+            message = "error -> " + newEntry +" is not seen";
         }
         else{
            user.getFavourite().add(newEntry);
 
            if (user.getFavourite().contains(newEntry)) {
-               message = "success -> "+ newEntry +" was added as favourite\n";
+               message = "success -> "+ newEntry +" was added as favourite";
                // nu sunt sigura
                this.noFavorite++;
            }
@@ -124,7 +124,28 @@ public  abstract class Video {
         return message;
    }
 
-    public abstract String view(User user);
+    public String view(User user){
+        String viewed = this.getName();
+        String message;
+
+        if(user == null){
+            message = "User doesn't exists.";
+        }
+
+
+        if (user.getHistory().containsKey(viewed)){
+            user.getHistory().put(viewed, user.getHistory().get(viewed) + 1);
+
+        }
+        else {
+            user.getHistory().putIfAbsent(viewed, 1);
+        }
+        //success -> Brexit: The Uncivil War was viewed with total views of 1
+        int no  = user.getHistory().get(viewed);
+
+        message = "success -> " + viewed +  " was viewed with total views of " + no;
+        return message;
+    }
 
     public abstract double computeAvgRating();
 

@@ -6,12 +6,15 @@ import action.Recommend;
 import actor.Actor;
 import common.Constants;
 import entertainment.Movie;
+import entertainment.Show;
 import entertainment.Video;
 import fileio.ActionInputData;
 import users.User;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Runner {
 
@@ -25,6 +28,7 @@ public class Runner {
     private List<Query> queries;
     private List<Command> commands;
     private List<Recommend> recommends;
+    private Map<Integer, String> outMessage = new LinkedHashMap<>();
 
     public Runner(List<Actor> actors, List<User> users,
                   List<Video> movies, List<Video> shows,
@@ -96,8 +100,18 @@ public class Runner {
         this.recommends = recommends;
     }
 
+    public Map<Integer, String> getOutMessage() {
+        return outMessage;
+    }
+
+    public void setOutMessage(Map<Integer, String> outMessage) {
+        this.outMessage = outMessage;
+    }
+
     private void executeCommand(Command c){
-        User currUser;
+
+        User currUser = null;
+
         for (User user:
                 this.users) {
             if (user.getUsername().equals(c.getUsername()))
@@ -113,6 +127,7 @@ public class Runner {
             if (movie.getName().equals(c.getTitle()))
             {
                 currVideo = movie;
+
                 break;
             }
         }
@@ -128,26 +143,33 @@ public class Runner {
             }
         }
 
-
-        if(c.getType().equals(Constants.VIEW)){
-
+        if(!(c.getType().equals(Constants.RATING))){
+            c.execute(currUser, currVideo );
+            this.outMessage.put(c.getId(), c.getMessage());
+        }
+        else if (c.getType().equals(Constants.RATING)){
+            if (c.getSeason() == 0){
+                assert currVideo != null;
+                c.rate((Movie) currVideo, currUser);
+                this.outMessage.put(c.getId(), c.getMessage());
+            }
+            else if(c.getSeason() != 0){
+                c.rate((Show) currVideo, currUser);
+                this.outMessage.put(c.getId(), c.getMessage());
+            }
         }
     }
+
     public void executeActions(List<ActionInputData> actions) {
 
         for (ActionInputData a:
              actions) {
+            // daca avem o comanda
             if (a.getActionType().equals(Constants.COMMAND)){
-                // vreau sa sterg comanda dupa ce s-a executat
-                // le iau pe rand
-                // sper printr-o minune sa mearga...
-                // frate mi-au amortit mainile
                 Command c = commands.get(0);
                 executeCommand(c);
-                //NU MAI POT. VREAU SA TERMIN CA SIMT CA MOR
-                ///OFFFFFFFFFF
-                // fiind user
-
+                // dupa ce a executat comanda bye-bye
+                commands.remove(c);
             }
         }
     }

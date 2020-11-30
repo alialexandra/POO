@@ -107,19 +107,19 @@ public class Command {
         if(this.grade != 0) {
             if (entry != null && userName != null) {
                 if (!(user.getHistory().containsKey(entry))) {
-                    this.message = "error -> " + entry + " is not seen\n";
+                    this.message = "error -> " + entry + " is not seen";
                 }
 
                 // nu e binee
                 else if (movie.getRatings().containsValue(userName)) {
-                    this.message = "error -> " + entry + " is already rated\n";
+                    this.message = "error -> " + entry + " is already rated";
                 } else {
                     //this.setRating(rate);
                     //nope setRated(true);
-                    user.getRatedMovies().add(entry);
+                    user.getRated().add(entry);
                     movie.getRatings().put(this.grade, userName);
                     this.message = "success -> " + entry + " was rated with " +
-                            this.grade + " by " + user.getUsername() + "\n";
+                            this.grade + " by " + user.getUsername();
                 }
             }
         }
@@ -134,39 +134,40 @@ public class Command {
             // aici e aceeasi poveste ca la vazut, ca fiecare sezon
             // poate fi rated doar o singura data
 
-            Season currSeason = show.getSeasons().get(season);
+            Season currSeason = show.getSeasons().get(season - 1);
             int id = currSeason.getCurrentSeason();
             // nu stiu daca e redundant sau daca era suficeient
             // doar sa am get season si atat...
 
             if (!(user.getHistory().containsKey(entry))) {
-                message = "error -> " + entry + " is not seen\n";
+                message = "error -> " + entry + " is not seen";
             }
 
             // nu stiu daca merge... :(
             else if (currSeason.getRatings().containsValue(userName)) {
-                this.message = "error -> " + entry + " is already rated\n";
+                this.message = "error -> " + entry + " is already rated";
             } else {
             /*currSeason.setRating(rate);
             currSeason.setRated(true);*/
                 if (currSeason.isRated() == false)
                     currSeason.setRated(true);
                 currSeason.getRatings().put(this.grade, userName);
-                this.message = "success -> " + entry + " was rated with " + this.grade + " by " + user.getUsername() + "\n";
+                user.getRated().add(show.getName());
+                this.message = "success -> " + entry + " was rated with " + this.grade + " by " + user.getUsername();
             }
         }
 
     }
     //only for view and favourite
     // nu e buna ptc o sa am probleme din cauza ipului video
-    public void execute(User user, Video video, String type){
+    public void execute(User user, Video video){
 
 
         if(user != null && video != null) {
             //if urile sunt viata mea
-            if(type.equals(Constants.VIEW))
+            if(this.type.equals(Constants.VIEW))
                 this.message = video.view(user);
-            else if (type.equals(Constants.FAVORITE))
+            else if (this.type.equals(Constants.FAVORITE))
                 this.message = video.addFavourite(user);
 
             }
