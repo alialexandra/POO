@@ -1,76 +1,115 @@
 package users;
 
-
-import entertainment.Video;
-
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.Map;
+import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 /**
  * Class for users
  * */
-public class User {
+public final class User {
 
-    // nu stiu daca sa adaug si un id..?
-    // nu, mai mult la filme
     private String username;
     private String sub;
-    private LinkedHashMap<String, Integer> history; // la initializare vreau sa l fac de tip LinkedHashMap ca sa mi mentina ordinea
+    private LinkedHashMap<String, Integer> history;
     private List<String> favourite;
-    // acum asta e useless off... viata...
-     private ArrayList<String> rated = new ArrayList<>();
+    private ArrayList<String> rated = new ArrayList<>();
 
 
-    public User(String username, String sub, LinkedHashMap<String, Integer> history,
-                List<String> favourite) {
+    public User(final String username, final String sub,
+                final LinkedHashMap<String, Integer> history,
+                final List<String> favourite) {
         this.username = username;
         this.sub = sub;
         this.history = history;
         this.favourite = favourite;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    /**
+     *
+     * @param username
+     */
+    public void setUsername(final String username) {
         this.username = username;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSub() {
         return sub;
     }
 
-    public void setSub(String sub) {
+    /**
+     *
+     * @param sub
+     */
+    public void setSub(final String sub) {
         this.sub = sub;
     }
 
+    /**
+     *
+     * @return
+     */
     public LinkedHashMap<String, Integer> getHistory() {
         return history;
     }
 
-    public void setHistory(LinkedHashMap<String, Integer> history) {
+    /**
+     *
+     * @param history
+     */
+    public void setHistory(final LinkedHashMap<String, Integer> history) {
         this.history = history;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<String> getFavourite() {
         return favourite;
     }
 
-    public void setFavourite(List<String> favourite) {
+    /**
+     *
+     * @param favourite
+     */
+    public void setFavourite(final List<String> favourite) {
         this.favourite = favourite;
     }
 
-    public void setRated(ArrayList<String> ratedMovies) {
+    /**
+     *
+     * @param ratedMovies
+     */
+    public void setRated(final ArrayList<String> ratedMovies) {
         this.rated = ratedMovies;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<String> getRated() {
         return rated;
     }
 
-    public void addRated(String v){
+    /**
+     *
+     * @param v
+     */
+    public void addRated(final String v) {
         this.rated.add(v);
     }
 }

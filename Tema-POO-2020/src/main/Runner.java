@@ -1,6 +1,11 @@
 package main;
 
-import action.*;
+import action.Query;
+import action.ActorsQuery;
+import action.VideoQuery;
+import action.UsersQuery;
+import action.Recommend;
+import action.Command;
 import actor.Actor;
 import common.Constants;
 import entertainment.Movie;
@@ -8,17 +13,17 @@ import entertainment.Show;
 import entertainment.Video;
 import fileio.ActionInputData;
 import users.User;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Runner {
+public final class Runner {
 
-    // get tasks done
-
-    // first comes the commands
+    /**
+     * get tasks done
+     * first comes the commands
+     */
     private List<Actor> actors;
     private List<User> users;
     private List<Video> movies;
@@ -28,10 +33,10 @@ public class Runner {
     private List<Recommend> recommends;
     private Map<Integer, String> outMessage = new LinkedHashMap<>();
 
-    public Runner(List<Actor> actors, List<User> users,
-                  List<Video> movies, List<Video> shows,
-                  List<Query> queries, List<Command> commands,
-                  List<Recommend> recommends) {
+    public Runner(final List<Actor> actors, final List<User> users,
+                  final List<Video> movies, final List<Video> shows,
+                  final List<Query> queries, final List<Command> commands,
+                  final List<Recommend> recommends) {
 
         this.actors = actors;
         this.users = users;
@@ -46,7 +51,7 @@ public class Runner {
         return actors;
     }
 
-    public void setActors(List<Actor> actors) {
+    public void setActors(final List<Actor> actors) {
         this.actors = actors;
     }
 
@@ -54,7 +59,7 @@ public class Runner {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(final List<User> users) {
         this.users = users;
     }
 
@@ -62,7 +67,7 @@ public class Runner {
         return movies;
     }
 
-    public void setMovies(List<Video> movies) {
+    public void setMovies(final List<Video> movies) {
         this.movies = movies;
     }
 
@@ -70,7 +75,7 @@ public class Runner {
         return shows;
     }
 
-    public void setShows(List<Video> shows) {
+    public void setShows(final List<Video> shows) {
         this.shows = shows;
     }
 
@@ -78,7 +83,7 @@ public class Runner {
         return queries;
     }
 
-    public void setQueries(List<Query> queries) {
+    public void setQueries(final List<Query> queries) {
         this.queries = queries;
     }
 
@@ -86,7 +91,7 @@ public class Runner {
         return commands;
     }
 
-    public void setCommands(List<Command> commands) {
+    public void setCommands(final List<Command> commands) {
         this.commands = commands;
     }
 
@@ -94,7 +99,7 @@ public class Runner {
         return recommends;
     }
 
-    public void setRecommends(List<Recommend> recommends) {
+    public void setRecommends(final List<Recommend> recommends) {
         this.recommends = recommends;
     }
 
@@ -102,96 +107,110 @@ public class Runner {
         return outMessage;
     }
 
-    public void setOutMessage(Map<Integer, String> outMessage) {
-        this.outMessage = outMessage;
-    }
-
-    private void executeCommand(Command c){
+    /**
+     * choose the command to be executed
+     * rating, view or favorite
+     * @param c
+     */
+    private void executeCommand(final Command c) {
 
         User currUser = null;
 
-        for (User user:
-                this.users) {
-            if (user.getUsername().equals(c.getUsername()))
-            {
+        for (User user
+                : this.users) {
+            if (user.getUsername().equals(c.getUsername())) {
                 currUser = user;
                 break;
             }
         }
 
         Video currVideo = null;
-        for (Video movie:
-                this.movies) {
-            if (movie.getName().equals(c.getTitle()))
-            {
+        // search for the needed video
+        for (Video movie
+                : this.movies) {
+            if (movie.getName().equals(c.getTitle())) {
                 currVideo = movie;
-
                 break;
             }
         }
 
-        if (currVideo == null){
-            for (Video show:
-                    this.shows) {
-                if (show.getName().equals(c.getTitle()))
-                {
+        if (currVideo == null) {
+            for (Video show
+                    : this.shows) {
+                if (show.getName().equals(c.getTitle())) {
                     currVideo = show;
                     break;
                 }
             }
         }
 
-        if(!(c.getType().equals(Constants.RATING))){
-            c.execute(currUser, currVideo );
+        if (!(c.getType().equals(Constants.RATING))) {
+            c.execute(currUser, currVideo);
             this.outMessage.put(c.getId(), c.getMessage());
-        }
-        else if (c.getType().equals(Constants.RATING)){
-            if (c.getSeason() == 0){
+            //(c.getType().equals(Constants.RATING))
+        } else {
+            if (c.getSeason() == 0) {
                 assert currVideo != null;
+                assert currUser != null;
                 c.rate((Movie) currVideo, currUser);
-                this.outMessage.put(c.getId(), c.getMessage());
-            }
-            else if(c.getSeason() != 0){
+            } else {
                 c.rate((Show) currVideo, currUser);
-                this.outMessage.put(c.getId(), c.getMessage());
             }
+            this.outMessage.put(c.getId(), c.getMessage());
         }
     }
 
-
-    private ArrayList<String> convertActorToString(List<Actor> actorsN){
+    /**
+     *
+     * @param actorsN
+     * @return the name of the actors needed in query
+     */
+    private ArrayList<String> convertActorToString(final List<Actor> actorsN) {
         ArrayList<String> names = new ArrayList<>();
 
-        for (Actor a:
-             actorsN) {
+        for (Actor a
+                : actorsN) {
             names.add(a.getName());
         }
 
         return names;
     }
 
-    private ArrayList<String> convertVideoToString(List<Video> videos){
+    /**
+     * @param videos
+     * @return only the names of the videos needed in query
+     */
+    private ArrayList<String> convertVideoToString(final List<Video> videos) {
         ArrayList<String> names = new ArrayList<>();
 
-        for (Video v:
-                videos) {
+        for (Video v
+                : videos) {
             names.add(v.getName());
         }
 
         return names;
     }
 
-    private ArrayList<String> convertUserToString(List<User> usersN){
+    /**
+     *
+     * @param usersN
+     * @return the name of the users needed in query
+     */
+    private ArrayList<String> convertUserToString(final List<User> usersN) {
         ArrayList<String> names = new ArrayList<>();
 
-        for (User u:
-                usersN) {
+        for (User u
+                : usersN) {
             names.add(u.getUsername());
         }
         return names;
     }
 
-    private void executeActorQuery(Query q){
+    /**
+     * get the results of the needed query for actors
+     * @param q
+     */
+    private void executeActorQuery(final Query q) {
 
         ActorsQuery actorsQuery = new ActorsQuery(
                 q.getId(),
@@ -202,35 +221,37 @@ public class Runner {
                 q.getFilter()
         );
 
-        List<Actor> result = new ArrayList<>();
+        List<Actor> result;
 
-        if (actorsQuery.getCriteria().equals(Constants.AVERAGE)) {
-            List<Video> videos = new ArrayList<>();
-            videos.addAll(this.movies);
-            videos.addAll(this.shows);
-            result = actorsQuery.averageList(this.actors, videos);
-            //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
-
-            String message = "Query result: " + convertActorToString(result);
-            //String message = "Query result: " + result;
-            this.outMessage.put(q.getId(), message);
-
-        }
-        else if (actorsQuery.getCriteria().equals(Constants.AWARDS)){
-            result = actorsQuery.awardsList(this.actors);
-            //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
-            String message = "Query result: " + convertActorToString(result);
-            this.outMessage.put(q.getId(), message);
-        }
-        else if (actorsQuery.getCriteria().equals(Constants.FILTER_DESCRIPTIONS)){
-            result = actorsQuery.filterList(this.actors);
-            //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
-            String message = "Query result: " + convertActorToString(result);
-            this.outMessage.put(q.getId(), message);
+        switch (actorsQuery.getCriteria()) {
+            case Constants.AVERAGE -> {
+                List<Video> videos = new ArrayList<>();
+                videos.addAll(this.movies);
+                videos.addAll(this.shows);
+                result = actorsQuery.averageList(this.actors, videos);
+                String message = Constants.QUERY_RESULT + convertActorToString(result);
+                this.outMessage.put(q.getId(), message);
+            }
+            case Constants.AWARDS -> {
+                result = actorsQuery.awardsList(this.actors);
+                String message = Constants.QUERY_RESULT + convertActorToString(result);
+                this.outMessage.put(q.getId(), message);
+            }
+            case Constants.FILTER_DESCRIPTIONS -> {
+                result = actorsQuery.filterList(this.actors);
+                String message = Constants.QUERY_RESULT + convertActorToString(result);
+                this.outMessage.put(q.getId(), message);
+            }
+            default -> throw new IllegalStateException("Unexpected value: "
+                    + actorsQuery.getCriteria());
         }
     }
 
-    private void executeVideoQuery(Query q){
+    /**
+     * get the results of the needed query for videos
+     * @param q
+     */
+    private void executeVideoQuery(final Query q) {
 
         VideoQuery videoQuery = new VideoQuery(
                 q.getId(),
@@ -242,60 +263,62 @@ public class Runner {
         );
 
         List<Video> result = new ArrayList<>();
-        //
-        if (videoQuery.getCriteria().equals(Constants.RATINGS)) {
 
-            if (q.getObjectType().equals(Constants.MOVIES)){
-                result = videoQuery.ratingsList(this.movies);
+        switch (videoQuery.getCriteria()) {
+            case Constants.RATINGS -> {
+
+                if (q.getObjectType().equals(Constants.MOVIES)) {
+                    result = videoQuery.ratingsList(this.movies);
+                }
+                if (q.getObjectType().equals(Constants.SHOWS)) {
+                    result = videoQuery.ratingsList(this.shows);
+                }
+                String message = Constants.QUERY_RESULT + convertVideoToString(result);
+                this.outMessage.put(q.getId(), message);
+
             }
-            if (q.getObjectType().equals(Constants.SHOWS)){
-                result = videoQuery.ratingsList(this.shows);
+            case Constants.FAVORITE -> {
+
+                if (q.getObjectType().equals(Constants.MOVIES)) {
+                    result = videoQuery.favoriteList(this.movies, this.users);
+                }
+                if (q.getObjectType().equals(Constants.SHOWS)) {
+                    result = videoQuery.favoriteList(this.shows, this.users);
+                }
+                String message = Constants.QUERY_RESULT + convertVideoToString(result);
+                this.outMessage.put(q.getId(), message);
             }
+            case Constants.LONGEST -> {
+                if (q.getObjectType().equals(Constants.MOVIES)) {
+                    result = videoQuery.longestList(this.movies);
+                }
+                if (q.getObjectType().equals(Constants.SHOWS)) {
+                    result = videoQuery.longestList(this.shows);
+                }
+                String message = Constants.QUERY_RESULT + convertVideoToString(result);
+                this.outMessage.put(q.getId(), message);
 
-
-            String message = "Query result: " + convertVideoToString(result);
-            this.outMessage.put(q.getId(), message);
-
+            }
+            case Constants.MOST -> {
+                if (q.getObjectType().equals(Constants.MOVIES)) {
+                    result = videoQuery.mostViewedList(this.movies, this.users);
+                }
+                if (q.getObjectType().equals(Constants.SHOWS)) {
+                    result = videoQuery.mostViewedList(this.shows, this.users);
+                }
+                String message = Constants.QUERY_RESULT + convertVideoToString(result);
+                this.outMessage.put(q.getId(), message);
+            }
+            default -> throw new IllegalStateException("Unexpected value: "
+                    + videoQuery.getCriteria());
         }
-        else if (videoQuery.getCriteria().equals(Constants.FAVORITE)){
-
-            if (q.getObjectType().equals(Constants.MOVIES)){
-                result = videoQuery.favoriteList(this.movies, this.users);
-            }
-            if (q.getObjectType().equals(Constants.SHOWS)){
-                result = videoQuery.favoriteList(this.shows, this.users);
-            }
-            String message = "Query result: " + convertVideoToString(result);
-            this.outMessage.put(q.getId(), message);
-        }
-        else if (videoQuery.getCriteria().equals(Constants.LONGEST)){
-            if (q.getObjectType().equals(Constants.MOVIES)){
-                result = videoQuery.longestList(this.movies);
-            }
-            if (q.getObjectType().equals(Constants.SHOWS)){
-                result = videoQuery.longestList(this.shows);
-            }
-            String message = "Query result: " + convertVideoToString(result);
-            this.outMessage.put(q.getId(), message);
-        }
-        else if (videoQuery.getCriteria().equals(Constants.MOST)){
-            if (q.getObjectType().equals(Constants.MOVIES)){
-                result = videoQuery.mostViewedList(this.movies, this.users);
-            }
-            if (q.getObjectType().equals(Constants.SHOWS)){
-                result = videoQuery.mostViewedList(this.shows, this.users);
-            }
-            String message = "Query result: " + convertVideoToString(result);
-            this.outMessage.put(q.getId(), message);
-        }
-
-
-
     }
 
-    private void executeUserQuery(Query q) {
-
-
+    /**
+     * get the lists of users needed in query
+     * @param q
+     */
+    private void executeUserQuery(final Query q) {
             UsersQuery usersQuery = new UsersQuery(
                     q.getId(),
                     q.getNumber(),
@@ -305,48 +328,43 @@ public class Runner {
                     q.getFilter()
             );
 
-            List<User> result = new ArrayList<>();
-
-                result = usersQuery.ratings(this.users);
-                //"Query result: [Camila Sodi, Luis Ernesto Franco, Chris Cooper]"
-
-                String message = "Query result: " + convertUserToString(result);
-                this.outMessage.put(q.getId(), message);
+            List<User> result;
+            result = usersQuery.ratings(this.users);
+            String message = Constants.QUERY_RESULT + convertUserToString(result);
+            this.outMessage.put(q.getId(), message);
 
     }
 
+    /**
+     * parse the action to be executed
+     * @param actions
+     */
+    public void executeActions(final List<ActionInputData> actions) {
 
-    public void executeActions(List<ActionInputData> actions) {
-
-        for (ActionInputData a:
-             actions) {
-            // daca avem o comanda
-            if (a.getActionType().equals(Constants.COMMAND)){
-                Command c = commands.get(0);
+        for (ActionInputData a
+                : actions) {
+            /**
+             * command case
+             */
+            if (a.getActionType().equals(Constants.COMMAND)) {
+                Command c = this.commands.get(0);
                 executeCommand(c);
-                // dupa ce a executat comanda bye-bye
-                commands.remove(c);
+                this.commands.remove(c);
             }
-            // daca avem un query:
-            // mor aici frate, nu mai pot
-            if (a.getActionType().equals(Constants.QUERY)){
+            /**
+             * query case
+             */
+            if (a.getActionType().equals(Constants.QUERY)) {
                 Query q = queries.get(0);
-                if (q.getObjectType().equals(Constants.ACTORS)){
-                    executeActorQuery(q);
+                switch (q.getObjectType()) {
+                    case Constants.ACTORS -> executeActorQuery(q);
+                    case Constants.MOVIES, Constants.SHOWS -> executeVideoQuery(q);
+                    case Constants.USERS -> executeUserQuery(q);
+                    default -> throw new IllegalStateException("Unexpected value: "
+                            + q.getObjectType());
                 }
-                else if (q.getObjectType().equals(Constants.MOVIES) ||
-                        q.getObjectType().equals(Constants.SHOWS)){
-                    executeVideoQuery(q);
-                }
-                else if (q.getObjectType().equals(Constants.USERS)){
-                    executeUserQuery(q);
-                }
-                // probabil un caz de query invalid
                 queries.remove(q);
             }
         }
     }
-
-
-
 }
