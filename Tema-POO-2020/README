@@ -3,36 +3,168 @@ Homework - VideosDB
 
 November 2020
 
-# Info
-https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema
+/**
+* Ghizdareanu Alexandra 336CB
+*/
 
-# About the code
 
-We provide the input tests, the logic that parses them and the checker that runs them.
 
-* test_db - contains the tests in JSON format
-* src
-   * checker - the checker's sources including the checkstyle necessary files, not to be modified
-   * fileio - classes for parsing the input files, not to be modified
-   * common, utils
-        * contain utility classes with constants and static methods
-        * you can add your own functionality in the existing classes or add new classes as well
-   * actor
-        * contains an enum for the types of awards an actor can have - do not modify it
-        * you can add here your actor related classes
-   * entertainment
-        * contains an enum for the supported video genres - do not modify it
-        * class for representing a Season of a tv show - do not modify it
-        * you can add here your entertainment related classes
 
-We encourage you to organize your implementation in packages based on the functionality their classes offer. Try to keep
-your code modular, readable and documented.
+    In implementarea temei am incercat sa respect principiile OOP si sa
+am functionalitati diferite pentru fiecare clasa, iar unde exista
+un format comun sa aplic mostenirea sau alte concepte OOP.
 
-# Testing
+    Functionalitatea principala a temei se regaseste in pachetul main,
+anume in clasele READER si RUNNER.
 
-The Main class runs the checker on your implementation. Add the entry point to your implementation in it.
+CLASA READER:
+    Clasa READER se ocupa cu parsarea datelor primite la input.
+Din acest motiv am lasat numai metode in clasa si nu am implementat niciun
+fel de constructor. Procesul este destul de straightforward, asa ca
+nu mai voi adauga alte explicatii.
 
-Run Main to test your implementation from the IDE or from command line.
+CLASA RUNNER:
 
-Run the main method from Test class with the name of the input file from the command line and the result will be written
-to the out.txt file. Thus, you can compare this result with ref.
+    Toata logica de modelare a bazei de date primite se regaseste in aceasta
+clasa. Metoda principala de executie a unei actiuni este executeActions.
+Aceasta primeste intreaga lista de actiuni care poate fi de diferite
+tipuri si in functie de tipul actiunii se va executa o comanda, un query sau
+o recomandare. Se instantiaza clasele respective pentru fiecare
+actiune in parte si se apeleaza metodele corespunzatoare. Dupa
+executare, se sterge din lista obiectul respectiv.
+Pentru o comanda specifica de user, anume rating, favorite sau view
+se va apela clasa COMMAND.
+
+IN COMMAND:
+
+    Clasa COMMAND contine paraetrii necesari acestui tip de actiune.
+Pnetru a descrie un film sau un serial, am folosit clasa Video ca fiind
+clasa parinte al celor doua instante, despre care voi vorbi ulteriror.
+Momentan, in COMMAND, exita o metoda execute pentru comenzile de
+view si favorite, deoarece se executa similar, in timp ce
+pentru a da rating, acest lucru difera de la  serial la film, intrucat
+serialele au si sezoane si ratingup se poate da separat pentru fiecare sezon.
+Pentru a face asta am supracscris metoda rate care se comporta diferit
+de la film la serial, in sensul ca la serial va da ratingul
+pentru sezonul primit la input. De asemenea se vor trata si cazurile
+de eroare, ca de exemplu:
+- nu se poate da rating unui film care nu a fost vazut
+- nu se poate adauga la favorite un film care nu a fost vazut
+sau care este deja adaugat. etc. Toate cazurile sun tratate in
+metodele respective asemenea si mesajul care trebuie afisat.
+
+
+Urmatorul caz care apare in metoda de action este cel de QUERY.
+
+IN QUERY:
+    Query-urile difera si ele in functiile de obiectul pe care se executa.
+Avem query pentru actori, useri sau videos. Din acest motiv am ales
+sa fie mostenita de clasele specifice pentru fiecare obiect.
+Metodele din toate clasele sunt asemantoare intre ele, deifera doar
+criteriile de sortare. Pentru a face sortarea mi-am creat clase care
+implementeaza interfata comparator si am suprascris metoda compare
+pentru criteriile de care am nevoie.
+
+TOATE SORTARILE SE FAC UTILIZAND CLASELE COMPARATOR IMPLEMENTATE DE MINE
+
+USERSQUERY:
+    - o singura metoda care returneaza cei mai activi utilizatori
+In clasa specifica fiecarui user am un parametru care retine toate
+filmele sau serialele care au primit rating de la acest utilizator.
+La sortare o fac dupa dimensiunea acestor liste. Am ales liste,
+intrucat am crezut ca imi va fi mai util ulterior.
+
+ACTORS QUERY:
+    - in functie de ce se cere, se face sortarea respectiva
+si se reutrneaza numarul cerut de actori.
+    - criteriile de care tin cont sunt media ratingurilor
+filmelor sau serialelor in care a jucat  un acor. In clasa specifica
+actorului am metoda care imi si calculeaza aceasta medie;
+premiile obtinute impreuna cu premiile cerute in query si
+ultima metoda aplia un filter pe descrierea carierei fiecarui actor,
+tinand cont de keyword-urile cerute. Deoarece nu este case sensitive,
+folosesc pattern matching cu cuvintele date, adaugand criteriul
+de case_insesitive si nu doar o simpla cautare. Folosesc
+un HashMap pentru a marca toate cuvinetele gasite si doar
+dupa ce m-am asigurat ca toate se regasesc in descrierea actorului
+il adaug in lista ce urmeaza sa fie sortata.
+
+VIDEO QUERY:
+    urmatorul tip de Query este necesar pentru video-uri.
+    metodele fac sortari ale videourilor in functie de:
+
+    -rating -> similara cu sortarea listelor de actori.
+    -favorite -> aici mai intai calculez numarul de aparitii
+in listele de favorite ale user-ilor, le actualizez intr-un camp
+special pentru acest numar si fac sortarea in functie de acesta
+sau de nume, care este al doilea criteriu.
+    - view -> analog cu metoda pentru favorite, dar ca de aceasta data
+criteriul este numarul de vizualizari. Restul este identic as putea
+spune. De mentionat este si faptul ca trebuie tinut cont si
+de gen si de anul aparitei.
+
+Revenind la metoda principala din RUNNER, ultimul caz tratat este
+cel al recomandarilor. Acestea se fac in clasa
+
+RECOMMEND:
+      - recomandarile propun 5 strategii, doua pentru toti
+utilizatorii si trei doar pentru cei cu abonament de tip premium.
+
+Strategii de recomandare:
+    nu stiu daca am intles bine al doilea criteriu de aparitie in
+    baza de date, dar am mai adaugat un camp de id la insantierea
+claselor de tip video, atat la filme cat si la seriale, id ul porneste de la 0.
+
+
+    standard -> cea mai basic strategie, pur si simplu
+in lista de videos se alege primul care nu se regaseste in istoricul user-ului
+    bestUnseen -> dupa ce am ales doar videos pe care userul nu le-a
+vazut, le sortam in functie de rating.
+    popular -> sincer nu am mai avut timp, nu am scuze, stiu! a fost
+timp.dar prea le las pe toate pe ultima suta :D...
+    favorite -> dupa ce s-a calculat numarul de aparitii in listele
+de favorite ale tuturor utilizatorilor, se face si recomandarea pentru
+user-ul nostru numai daca videoul nu a fost vazut.
+    search -> se aleg doar filmele care nu au fost vazute
+
+In clasa RUNNER in afar de aceasta metoda principala de impartire a
+taskurilor, mai sunt si alte metode adiacente care subimpart actiunea
+ca de exemplu tipurile de query sau de recomandari.
+
+Claele care descriu obiectele prelucarate sunt: Actor, Video impreuna
+cu clasele care o mostenesc si User, fiecare in pachete separate.
+
+ACTOR:
+    - contine campurile pe care le are un actor date la input.
+In plus am mai adaugat campul de medie, care are si o metoda ce
+o calucleaza. Acesta imi trebuie la sortarea actorilor in functie
+de medie.
+
+USER:
+    - analog cu actorul.
+    - contine doar o metoda diferita de adaugare in lista de rated
+pentru video-uri.
+
+package entertainment:
+
+VIDEO:
+    Aici se regaseste clasa Video, pe care am ales sa o fac de tip abstract.
+deoarece ea nu este insantiata niciodata dar descrie un format comun pentru
+filme si seriale, avand multe campuri comune.
+Metodele de view si favorite sunt la fel pentru filme si seriale,
+asa ca ele sunt implementate in clasa parinte. Cele doua metode abstracte
+care sunt diferite sunt metodele de calcule pentru medie ratingurilor
+si metoda de calcul pentru durata, ambele se fac diferit din cauza
+faptului ca serialul are si sezoane si atat rating-ul cat si durata se
+calculeaza tinand cont de sezoane. Pnetru a retine ratingurile am
+folosit un map in clasele de Movie si de Season, deoarece ele
+ma interesau.
+
+
+
+
+
+
+
+
+

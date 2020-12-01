@@ -6,8 +6,9 @@ import java.util.List;
 public class Query {
 
 
-    // class used in parsing the query's parameters
-
+    /**
+     * class used in parsing the query's parameters
+    */
     private int id;
     private String objectType;
     private String sortCriteria;

@@ -182,11 +182,19 @@ public abstract class Video {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getGenreView() {
         return genreView;
     }
 
-    public void setGenreView(int genreView) {
+    /**
+     *
+     * @param genreView
+     */
+    public void setGenreView(final int genreView) {
         this.genreView = genreView;
     }
 

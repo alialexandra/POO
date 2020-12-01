@@ -199,7 +199,7 @@ public final class Reader {
      * @param showInput
      */
     public void parseShows(final List<SerialInputData> showInput) {
-        int index = this.movies.size();
+        int index = 0;
         for (SerialInputData show
                 : showInput) {
             this.shows.add(new Show(show.getTitle(),
@@ -260,7 +260,7 @@ public final class Reader {
                             a.getActionId(),
                             a.getType(),
                             a.getUsername(),
-                            a.getGenre()));
+                    a.getGenre()));
                     break;
                 default:
                     break;

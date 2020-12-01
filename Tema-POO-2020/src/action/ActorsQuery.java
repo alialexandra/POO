@@ -46,10 +46,10 @@ public final class ActorsQuery extends Query {
         RatingComparator cmp = new RatingComparator();
 
         if (super.getSortCriteria().equals("asc")) {
-            Collections.sort(sortActors, cmp);
+            sortActors.sort(cmp);
         }
         if (super.getSortCriteria().equals("desc")) {
-            Collections.sort(sortActors, Collections.reverseOrder(cmp));
+            sortActors.sort(Collections.reverseOrder(cmp));
         }
 
         if (super.getNumber() < sortActors.size()) {
@@ -89,10 +89,10 @@ public final class ActorsQuery extends Query {
         AwardComparator cmp = new AwardComparator();
 
         if (super.getSortCriteria().equals("asc")) {
-            Collections.sort(sortActors, cmp);
+            sortActors.sort(cmp);
         }
         if (super.getSortCriteria().equals("desc")) {
-            Collections.sort(sortActors, Collections.reverseOrder(cmp));
+            sortActors.sort(Collections.reverseOrder(cmp));
         }
         return sortActors;
 
@@ -131,10 +131,10 @@ public final class ActorsQuery extends Query {
         NameComparator cmp = new NameComparator();
 
         if (super.getSortCriteria().equals("asc")) {
-            Collections.sort(sorted, cmp);
+            sorted.sort(cmp);
         }
         if (super.getSortCriteria().equals("desc")) {
-            Collections.sort(sorted, Collections.reverseOrder(cmp));
+            sorted.sort(Collections.reverseOrder(cmp));
         }
         return sorted;
     }

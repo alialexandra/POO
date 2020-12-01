@@ -123,7 +123,9 @@ public final class Runner {
         }
 
         Video currVideo = null;
-        // search for the needed video
+        /**
+         * search for the needed video
+         */
         for (Video movie
                 : this.movies) {
             if (movie.getName().equals(c.getTitle())) {
@@ -145,7 +147,6 @@ public final class Runner {
         if (!(c.getType().equals(Constants.RATING))) {
             c.execute(currUser, currVideo);
             this.outMessage.put(c.getId(), c.getMessage());
-            //(c.getType().equals(Constants.RATING))
         } else {
             if (c.getSeason() == 0) {
                 assert currVideo != null;
@@ -170,7 +171,6 @@ public final class Runner {
                 : actorsN) {
             names.add(a.getName());
         }
-
         return names;
     }
 
@@ -341,7 +341,7 @@ public final class Runner {
                                       final String searchGenre) {
         boolean valid = false;
         for (Video v
-        :videos){
+            :videos) {
             if (v.getGenres().contains(searchGenre)) {
                 valid = true;
                 break;
@@ -374,7 +374,7 @@ public final class Runner {
                         + r.standard(videos, currUser).getName();
                 this.outMessage.put(r.getId(), message);
             }
-        }else
+        } else
         if (r.getType().equals(Constants.BEST_UNSEEN)) {
             if (r.bestUnseen(videos, currUser) != null) {
                 String message = Constants.BEST_RES
@@ -384,7 +384,7 @@ public final class Runner {
             }
         }
         if (r.getType().equals(Constants.FAVORITE)) {
-            if( Objects.equals(currUser.getSub(), Constants.PREMIUM)) {
+            if (Objects.equals(currUser.getSub(), Constants.PREMIUM)) {
 
                 if (r.favorite(videos, currUser, this.users) != null) {
                 String message = Constants.FAVORITE_RES
@@ -399,9 +399,9 @@ public final class Runner {
 
         }
         if (r.getType().equals(Constants.POPULAR)) {
-            if( Objects.equals(currUser.getSub(), Constants.PREMIUM)) {
-                if (r.favorite(videos, currUser, this.users) != null) {
-                    String message = Constants.FAVORITE_RES
+            if (Objects.equals(currUser.getSub(), Constants.PREMIUM)) {
+                if (r.popular(videos) != null) {
+                    String message = Constants.POPULAR_RES
                             + Constants.RECOMMENDATION_RESULT
                             + r.standard(videos, currUser).getName();
                     this.outMessage.put(r.getId(), message);
@@ -413,16 +413,16 @@ public final class Runner {
 
         }
         if (r.getType().equals(Constants.SEARCH)) {
-            if( Objects.equals(currUser.getSub(), Constants.PREMIUM)
+            if (Objects.equals(currUser.getSub(), Constants.PREMIUM)
             && checkSearchValues(videos, r.getGenre())) {
-                if (r.favorite(videos, currUser, this.users) != null) {
+                if (r.search(videos, currUser) != null) {
                     String message = Constants.SEARCH_RES
                             + Constants.RECOMMENDATION_RESULT
-                            + r.standard(videos, currUser).getName();
+                            + r.search(videos, currUser);
                     this.outMessage.put(r.getId(), message);
                 }
-            } else if(currUser.getSub().equals(Constants.BASIC)
-            || (!checkSearchValues(videos, r.getGenre()) )) {
+            } else if (currUser.getSub().equals(Constants.BASIC)
+            || (!checkSearchValues(videos, r.getGenre()))) {
                 String message = Constants.SEARCH_RES + Constants.INVALID;
                 this.outMessage.put(r.getId(), message);
             }

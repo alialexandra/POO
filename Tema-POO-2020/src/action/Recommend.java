@@ -2,6 +2,7 @@ package action;
 
 import comparators.BestRatingComp;
 import comparators.FavoriteComp;
+import comparators.VideoRatingComp;
 import entertainment.Video;
 import users.User;
 
@@ -50,7 +51,7 @@ public final class Recommend {
         this.username = username;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(final String genre) {
         this.genre = genre;
     }
 
@@ -94,6 +95,7 @@ public final class Recommend {
                 unseen.add(v);
             }
         }
+
         BestRatingComp cmp = new BestRatingComp();
 
         unseen.sort(Collections.reverseOrder(cmp));
@@ -104,15 +106,6 @@ public final class Recommend {
         return null;
     }
 
-    /**
-     * compute the number of the appereance of each video
-     * @param users
-     * @param video
-     */
-    private void computePopularGenre(final List<User> users,
-                                     final Video video) {
-
-    }
     /**
      *
      * @param videos
@@ -177,8 +170,26 @@ public final class Recommend {
      * @param videos
      * @return
      */
-    public List<Video> search(final List<Video> videos) {
-        return null;
+    public List<String> search(final List<Video> videos,
+                              final User user) {
+        ArrayList<Video> unseen = new ArrayList<>();
+        for (Video v
+                : videos) {
+            if (!(user.getHistory().keySet().contains(v))
+            && v.getGenres().contains(this.genre)) {
+                unseen.add(v);
+            }
+        }
+
+        VideoRatingComp cmp = new VideoRatingComp();
+        unseen.sort(cmp);
+
+        ArrayList<String> result = new ArrayList<>();
+        for (Video v
+                : unseen) {
+            result.add(v.getName());
+        }
+        return result;
     }
 
 
