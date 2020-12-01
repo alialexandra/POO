@@ -3,18 +3,15 @@ package main;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
-import fileio.ActionInputData;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
 import org.json.simple.JSONArray;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -94,12 +91,12 @@ public final class Main {
 
         run.executeActions(input.getCommands());
 
-        for (Map.Entry<Integer,String> entry : run.getOutMessage().entrySet())
-        {
-            arrayResult.add(fileWriter.writeFile(entry.getKey(), null, entry.getValue()));
+
+        for (Map.Entry<Integer, String> entry
+                : run.getOutMessage().entrySet()) {
+            arrayResult.add(fileWriter.writeFile(entry.getKey(),
+                    null, entry.getValue()));
         }
-
-
         fileWriter.closeJSON(arrayResult);
     }
 }

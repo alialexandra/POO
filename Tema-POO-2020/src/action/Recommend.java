@@ -4,13 +4,14 @@ import entertainment.Video;
 
 import java.util.List;
 
-public class Recommend {
+public final class Recommend {
 
     private int id;
     private String type;
     private String username;
 
-    public Recommend(int id, String type, String username) {
+    public Recommend(final int id, final String type,
+                     final String username) {
         this.id = id;
         this.type = type;
         this.username = username;
@@ -20,7 +21,7 @@ public class Recommend {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -28,7 +29,7 @@ public class Recommend {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -36,26 +37,52 @@ public class Recommend {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public Video standard(List<Video> videos){
-        return null;
-    }
-    public Video bestUnseen(List<Video> videos){
-        return null;
-    }
-
-    public Video popular(List<Video> videos){
-        return null;
-    }
-
-    public Video favorite(List<Video> videos){
+    /**
+     *
+     * @param videos
+     * @return
+     */
+    public Video standard(final List<Video> videos) {
         return null;
     }
 
-    public List<Video> search(List<Video> videos){
+    /**
+     *
+     * @param videos
+     * @return
+     */
+    public Video bestUnseen(final List<Video> videos) {
+        return null;
+    }
+
+    /**
+     *
+     * @param videos
+     * @return
+     */
+    public Video popular(final List<Video> videos) {
+        return null;
+    }
+
+    /**
+     *
+     * @param videos
+     * @return
+     */
+    public Video favorite(final List<Video> videos) {
+        return null;
+    }
+
+    /**
+     *
+     * @param videos
+     * @return
+     */
+    public List<Video> search(final List<Video> videos) {
         return null;
     }
 

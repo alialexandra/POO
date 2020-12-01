@@ -4,10 +4,10 @@ import users.User;
 
 import java.util.Comparator;
 
-public class UserComparator implements Comparator<User> {
+public final class UserComparator implements Comparator<User> {
 
     @Override
-    public int compare(User o1, User o2) {
+    public int compare(final User o1, final User o2) {
         int result;
         if (o1 == null && o2 == null) {
             result = 0;

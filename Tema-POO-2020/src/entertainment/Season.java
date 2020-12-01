@@ -1,8 +1,6 @@
 package entertainment;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,21 +18,24 @@ public final class Season {
      */
     private int duration;
     /**
-     * List of ratings for each season
+     * check if the season is rated
      */
-    // pentru mine cred ca ar fi mai usor
-    // sa fie un map cu sezonul si rate ul lui
-    // mie mi se pare mmult mai ok sa am un double simplu
-    // vad la citire daca ramane asa, nu stiu ce sa zic sincer
-    //private double rating;
     private boolean rated;
+    /**
+     * ratings for each season
+     */
     private Map<String, Double> ratings = new LinkedHashMap<>();
 
+    /**
+     *
+     * @param currentSeason
+     * @param duration
+     */
     public Season(final int currentSeason, final int duration) {
         this.currentSeason = currentSeason;
         this.duration = duration;
-        this.rated = false;// initially
-        //this.ratings = new ArrayList<>();
+        this.rated = false;
+
     }
 
     public int getDuration() {
@@ -45,15 +46,7 @@ public final class Season {
         this.duration = duration;
     }
 
-  /*  public List<Double> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(final List<Double> ratings) {
-        this.ratings = ratings;
-    }*/
-
-    public void setRated(boolean rated) {
+    public void setRated(final boolean rated) {
         this.rated = rated;
     }
 
@@ -65,7 +58,7 @@ public final class Season {
         return currentSeason;
     }
 
-    public void setRatings(Map<String, Double> ratings) {
+    public void setRatings(final Map<String, Double> ratings) {
         this.ratings = ratings;
     }
 
@@ -73,7 +66,12 @@ public final class Season {
         return ratings;
     }
 
-    public void setRating(String name, double grade){
+    /**
+     *
+     * @param name
+     * @param grade
+     */
+    public void setRating(final String name, final double grade) {
         this.ratings.put(name, grade);
     }
 

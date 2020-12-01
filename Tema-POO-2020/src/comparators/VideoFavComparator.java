@@ -7,7 +7,7 @@ import java.util.Comparator;
 public final class VideoFavComparator implements Comparator<Video> {
 
     @Override
-    public int compare(Video o1, Video o2) {
+    public int compare(final Video o1, final Video o2) {
         int result;
         if (o1 == null && o2 == null) {
             result = 0;

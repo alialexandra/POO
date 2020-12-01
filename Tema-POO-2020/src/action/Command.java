@@ -7,21 +7,20 @@ import entertainment.Video;
 import users.User;
 import common.Constants;
 
-// am terminat cu comenzile, kind of
-public class Command {
+public final class Command {
 
     private int id;
-    private String type;// rating, view, favorite
-    private String message; //mesajul care va fi scris in output
-    // mai am user si numele filmului, dar cred ca le aleg la parsare??
+    private String type;
+    private String message;
     private double grade;
     private int season;
     private String title;
     private String username;
 
 
-    public Command(int id, String type, double grade, int season, String username,
-                    String title) {
+    public Command(final int id, final String type, final double grade,
+                   final int season, final String username,
+                   final String title) {
         this.id = id;
         this.type = type;
         this.message = null;
@@ -35,7 +34,7 @@ public class Command {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -43,7 +42,7 @@ public class Command {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -51,7 +50,7 @@ public class Command {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 
@@ -59,7 +58,7 @@ public class Command {
         return grade;
     }
 
-    public void setGrade(Double grade) {
+    public void setGrade(final double grade) {
         this.grade = grade;
     }
 
@@ -67,7 +66,7 @@ public class Command {
         return season;
     }
 
-    public void setSeason(int season) {
+    public void setSeason(final int season) {
         this.season = season;
     }
 
@@ -75,7 +74,7 @@ public class Command {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -83,96 +82,93 @@ public class Command {
         return username;
     }
 
-    public void setGrade(double grade) {
-        this.grade = grade;
-    }
-
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
+    /**
+     * rate method specific for a movie
+     * @param movie to be rated
+     * @param user that gives a rating
+     */
 
-
-    // execute the given command
-    // incerc cu video deocamdata
-    // dar trebuie sa am grija cand fac citirea sa apelez ce trebuie
-    // daca n am rate de facut dau double cu - sau ceva
-
-    public void rate(Movie movie, User user) {
+    public void rate(final Movie movie, final User user) {
 
 
         String entry = movie.getName();
         String userName = user.getUsername();
 
-        if(this.grade != 0) {
-            if (entry != null && userName != null) {
-                if (!(user.getHistory().containsKey(entry))) {
-                    this.message = "error -> " + entry + " is not seen";
-                }
+        if (this.grade != 0) {
+            if (entry == null || userName == null) {
+                return;
+            }
+            if (!(user.getHistory().containsKey(entry))) {
+                this.message = "error -> " + entry + " is not seen";
+            } else
+            if (movie.getRatings().containsKey(userName)) {
+                this.message = "error -> " + entry
+                        + " has been already rated";
+            } else {
+                user.addRated(entry);
+                movie.setRating(userName, this.grade);
+                this.message = "success -> " + entry + " was rated with "
+                        + this.grade + " by " + user.getUsername();
 
-                // nu e binee
-                else if (movie.getRatings().containsKey(userName)) {
-                    this.message = "error -> " + entry + " has been already rated";
-                } else {
-                    //this.setRating(rate);
-                    //nope setRated(true);
-                    user.addRated(entry);
-                    movie.setRating(userName, this.grade);
-                    this.message = "success -> " + entry + " was rated with " +
-                            this.grade + " by " + user.getUsername();
-
-                }
             }
         }
 
     }
-    public void rate(Show show, User user) {
 
-        if(this.grade != 0 && season != 0) {
+    /**
+     * similar to the method above, but for shows
+     * we need another method because a show has seasons that can be rated
+     * or not
+     * @param show
+     * @param user
+     */
+    public void rate(final Show show, final User user) {
+
+        if (this.grade != 0 && season != 0) {
             String entry = show.getName();
             String userName = user.getUsername();
-
-            // aici e aceeasi poveste ca la vazut, ca fiecare sezon
-            // poate fi rated doar o singura data
-
             Season currSeason = show.getSeasons().get(season - 1);
-            int id = currSeason.getCurrentSeason();
-            // nu stiu daca e redundant sau daca era suficeient
-            // doar sa am get season si atat...
 
             if (!(user.getHistory().containsKey(entry))) {
                 message = "error -> " + entry + " is not seen";
-            }
-
-            // nu stiu daca merge... :(
-            else if (currSeason.getRatings().containsKey(userName)) {
+            } else
+            if (currSeason.getRatings().containsKey(userName)) {
                 this.message = "error -> " + entry + " is already rated";
             } else {
-            /*currSeason.setRating(rate);
-            currSeason.setRated(true);*/
-                if (currSeason.isRated() == false)
+
+                if (!currSeason.isRated()) {
                     currSeason.setRated(true);
+                }
                 currSeason.setRating(userName, this.grade);
                 user.addRated(entry);
-                this.message = "success -> " + entry + " was rated with " + this.grade + " by " + user.getUsername();
+                this.message = "success -> "
+                        + entry + " was rated with " + this.grade
+                        + " by " + user.getUsername();
 
             }
         }
-
     }
-    //only for view and favourite
-    // nu e buna ptc o sa am probleme din cauza ipului video
-    public void execute(User user, Video video){
 
+    /**
+     * parser for view and favorite methods
+     * @param user
+     * @param video
+     */
+    public void execute(final User user, final Video video) {
 
-        if(user != null && video != null) {
-            //if urile sunt viata mea
-            if(this.type.equals(Constants.VIEW))
+        if (user != null && video != null) {
+            if (this.type.equals(Constants.VIEW)) {
                 this.message = video.view(user);
-            else if (this.type.equals(Constants.FAVORITE))
+            }
+            if (this.type.equals(Constants.FAVORITE)) {
                 this.message = video.addFavourite(user);
-
             }
         }
     }
+
+}
 

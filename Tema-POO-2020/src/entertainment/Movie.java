@@ -1,22 +1,17 @@
 package entertainment;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.List;
 
-import users.User;
-
-import java.util.*;
-
-public class Movie  extends Video {
+public final class Movie  extends Video {
 
     private int duration;
-    //private double rating;
-    //private boolean rated; // asta e in plus
-    // lista a toate ratingurile primite de un film de la un anumit user
-    //name ul userului care a dat ratingul
     private Map<String, Double> ratings = new LinkedHashMap<>();
 
 
-
-
-    public Movie(String name, int year, List<String> genres, List<String> cast, int duration) {
+    public Movie(final String name, final int year,
+                 final List<String> genres, final List<String> cast,
+                 final int duration) {
         super(name, year, genres, cast);
         this.duration = duration;
     }
@@ -25,7 +20,7 @@ public class Movie  extends Video {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
@@ -33,27 +28,33 @@ public class Movie  extends Video {
         return ratings;
     }
 
-    public void setRatings(Map<String, Double> ratings) {
+    public void setRatings(final Map<String, Double> ratings) {
         this.ratings = ratings;
     }
 
-    public void setRating(String name, double grade){
+    /**
+     * add a new entry in the map specific for ratings
+     * @param name
+     * @param grade
+     */
+    public void setRating(final String name, final double grade) {
         this.ratings.put(name, grade);
     }
 
 
-
-
-    // compute average rating for movies
+    /**
+     * compute the average rating for a movie
+     * @return
+     */
     @Override
     public double computeAvgRating() {
         double average = 0;
         double count = 0;
 
-        if(!(ratings.isEmpty())) {
+        if (!(ratings.isEmpty())) {
 
-            for (Double d: ratings.values()){
-                if(d != 0){
+            for (Double d: ratings.values()) {
+                if (d != 0) {
                     average += d;
                     count++;
                 }
@@ -64,6 +65,10 @@ public class Movie  extends Video {
         return average;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int computeDuration() {
         return this.duration;

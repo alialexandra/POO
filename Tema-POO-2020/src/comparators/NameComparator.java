@@ -7,7 +7,7 @@ import java.util.Comparator;
 public final class NameComparator implements Comparator<Actor> {
 
     @Override
-    public int compare(Actor o1, Actor o2) {
+    public int compare(final Actor o1, final Actor o2) {
         int result;
         if (o1 == null && o2 == null) {
             result = 0;

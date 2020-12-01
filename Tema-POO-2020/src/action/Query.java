@@ -1,91 +1,127 @@
 package action;
 
-import actor.Actor;
-import comparators.AwardComparator;
-import comparators.NameComparator;
-import comparators.RatingComparator;
-import entertainment.Movie;
-import entertainment.Show;
 
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.List;
 
-public  class Query {
+public class Query {
 
-    // id ul pentru actiunea
+
+    // class used in parsing the query's parameters
+
     private int id;
-    private String objectType;//actors, movies, users, shows
-    private String sortCriteria;//asc sau desc
+    private String objectType;
+    private String sortCriteria;
     private String criteria;
-    // sunt doar 4 filtere, vad eu ce se intampla
-    private List<List<String>> filter;// keywords pentru filtrare
-    private int number;// daca e dat un numar sau ceva
-    //TODO: add message to be written in out?? idk
-    private String message;
+    private List<List<String>> filter;
+    private int number;
 
 
-    public Query(int id, int number, String objectType, String sortCriteria, String criteria, List<List<String>> filter) {
+
+    public Query(final int id, final int number,
+                 final String objectType, final String sortCriteria,
+                 final String criteria, final List<List<String>> filter) {
         this.id = id;
         this.number = number;
         this.objectType = objectType;
         this.sortCriteria = sortCriteria;
         this.criteria = criteria;
         this.filter = filter;
-        this.message = null;
+
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    /**
+     *
+     * @param id
+     */
+    public void setId(final int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getObjectType() {
         return objectType;
     }
 
-    public void setObjectType(String objectType) {
+    /**
+     *
+     * @param objectType
+     */
+    public void setObjectType(final String objectType) {
         this.objectType = objectType;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSortCriteria() {
         return sortCriteria;
     }
 
-    public void setSortCriteria(String sortCriteria) {
+    /**
+     *
+     * @param sortCriteria
+     */
+    public void setSortCriteria(final String sortCriteria) {
         this.sortCriteria = sortCriteria;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCriteria() {
         return criteria;
     }
 
-    public void setCriteria(String criteria) {
+    /**
+     *
+     * @param criteria
+     */
+    public void setCriteria(final String criteria) {
         this.criteria = criteria;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<List<String>> getFilter() {
         return filter;
     }
 
-    public void setFilter(List<List<String>> filter) {
+    /**
+     *
+     * @param filter
+     */
+    public void setFilter(final List<List<String>> filter) {
         this.filter = filter;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    /**
+     * @param number
+     */
+    public void setNumber(final int number) {
         this.number = number;
     }
-
-    // add specific methods
-
-
-
 
 }

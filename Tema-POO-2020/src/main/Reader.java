@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Reader {
-    // clasa in care pun ce am citit
+/**
+ * Class for parsing the database given at the input
+ */
+public final class Reader {
 
     private List<Actor> actors = new ArrayList<>();
     private List<User> users = new ArrayList<>();
@@ -25,74 +27,126 @@ public class Reader {
     private List<Command> commands = new ArrayList<>();
     private List<Recommend> recommends = new ArrayList<>();
 
-    public Reader(){}
-
+    /**
+     *
+     * @return
+     */
     public List<Actor> getActors() {
         return actors;
     }
 
-    public void setActors(List<Actor> actors) {
+    /**
+     *
+     * @param actors
+     */
+    public void setActors(final List<Actor> actors) {
         this.actors = actors;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    /**
+     *
+     * @param users
+     */
+    public void setUsers(final List<User> users) {
         this.users = users;
     }
 
-
-
+    /**
+     *
+     * @return
+     */
     public List<Query> getQueries() {
         return queries;
     }
 
-    public void setQueries(List<Query> queries) {
+    /**
+     *
+     * @param queries
+     */
+    public void setQueries(final List<Query> queries) {
         this.queries = queries;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Command> getCommands() {
         return commands;
     }
 
-    public void setCommands(List<Command> commands) {
+    /**
+     *
+     * @param commands
+     */
+    public void setCommands(final List<Command> commands) {
         this.commands = commands;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Recommend> getRecommends() {
         return recommends;
     }
 
-    public void setRecommends(List<Recommend> recommends) {
+    /**
+     *
+     * @param recommends
+     */
+    public void setRecommends(final List<Recommend> recommends) {
         this.recommends = recommends;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Video> getShows() {
         return shows;
     }
 
-    public void setShows(List<Video> shows) {
+    /**
+     *
+     * @param shows
+     */
+    public void setShows(final List<Video> shows) {
         this.shows = shows;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Video> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Video> movies) {
+    /**
+     *
+     * @param movies
+     */
+    public void setMovies(final List<Video> movies) {
         this.movies = movies;
     }
 
-    // metode de instantiere a claselor
-    
-    public void parseActors(List<ActorInputData> actorsInput){
+    /**
+     * parse the list of actors
+      * @param actorsInput
+     */
+    public void parseActors(final List<ActorInputData> actorsInput) {
 
-
-
-        for (ActorInputData actor :
-             actorsInput) {
+        for (ActorInputData actor
+                : actorsInput) {
             this.actors.add(new Actor(actor.getName(),
                     actor.getCareerDescription(),
                     actor.getFilmography(),
@@ -101,79 +155,81 @@ public class Reader {
 
     }
 
-    public void parseUsers(List<UserInputData> usersInput){
+    /**
+     *
+     * @param usersInput
+     */
+    public void parseUsers(final List<UserInputData> usersInput) {
 
-
-
-        for (UserInputData user :
-                usersInput) {
+        for (UserInputData user
+                : usersInput) {
             this.users.add(new User(user.getUsername(),
                     user.getSubscriptionType(),
                     (LinkedHashMap<String, Integer>) user.getHistory(),
-                    user.getFavoriteMovies()
-                    ));
+                    user.getFavoriteMovies()));
         }
-
 
     }
 
-    public void parseMovie(List<MovieInputData> moviesInput){
+    /**
+     *
+     * @param moviesInput
+     */
+    public void parseMovie(final List<MovieInputData> moviesInput) {
 
-
-
-        for (MovieInputData movie :
-                moviesInput) {
+        for (MovieInputData movie
+                : moviesInput) {
             this.movies.add(new Movie(movie.getTitle(),
                     movie.getYear(),
                     movie.getGenres(),
                     movie.getCast(),
-                    movie.getDuration()
-            ));
+                    movie.getDuration()));
         }
-
     }
 
-    public void parseShows(List<SerialInputData> showInput){
-
-
-
-        for (SerialInputData show :
-                showInput) {
+    /**
+     *
+     * @param showInput
+     */
+    public void parseShows(final List<SerialInputData> showInput) {
+        for (SerialInputData show
+                : showInput) {
             this.shows.add(new Show(show.getTitle(),
                     show.getYear(),
                     show.getGenres(),
                     show.getCast(),
                     show.getNumberSeason(),
-                    show.getSeasons()
-            ));
+                    show.getSeasons()));
         }
 
     }
 
-    // parse commands
+    /**
+     *
+     * @param actions
+     */
+    public void parseAction(final List<ActionInputData> actions) {
 
-    public void parseAction(List<ActionInputData> actions){
+        for (ActionInputData a
+                : actions) {
 
-
-        for (ActionInputData a:
-             actions) {
             String actionType = a.getActionType();
 
-            switch (actionType){
+            switch (actionType) {
                 case Constants.COMMAND:
-                    if(a.getGrade() == 0) {
+                    if (a.getGrade() == 0) {
                         this.commands.add(new Command(a.getActionId(),
-                                a.getType(),0,0,
+                                a.getType(), 0, 0,
                                 a.getUsername(), a.getTitle()));
                     }
-                    if (a.getSeasonNumber() == 0 &&
-                        a.getGrade() != 0){
+                    if (a.getSeasonNumber() == 0
+                            && a.getGrade() != 0) {
                         this.commands.add(new Command(a.getActionId(),
                                 a.getType(), a.getGrade(), 0,
                                 a.getUsername(), a.getTitle()));
                     }
-                    if (a.getGrade() != 0 &&
-                    a.getSeasonNumber() != 0){
+                    if (a.getGrade() != 0
+                            && a.getSeasonNumber() != 0) {
                         this.commands.add(new Command(a.getActionId(),
                                 a.getType(), a.getGrade(),
                                 a.getSeasonNumber(),
@@ -188,16 +244,17 @@ public class Reader {
                             a.getSortType(),
                             a.getCriteria(),
                             a.getFilters()));
+                    break;
                 case Constants.RECOMMENDATION:
                     this.recommends.add(new Recommend(
                             a.getActionId(),
                             a.getActionType(),
                             a.getUsername()));
+                    break;
                 default:
                     break;
 
             }
-
         }
     }
 

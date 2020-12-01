@@ -4,10 +4,10 @@ import entertainment.Video;
 
 import java.util.Comparator;
 
-public class ViewsComparator implements Comparator<Video> {
+public final class ViewsComparator implements Comparator<Video> {
 
     @Override
-    public int compare(Video o1, Video o2) {
+    public int compare(final Video o1, final Video o2) {
         int result;
         if (o1 == null && o2 == null) {
             result = 0;

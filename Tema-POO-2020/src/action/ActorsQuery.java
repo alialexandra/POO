@@ -5,51 +5,54 @@ import actor.ActorsAwards;
 import comparators.AwardComparator;
 import comparators.NameComparator;
 import comparators.RatingComparator;
-import entertainment.Movie;
-import entertainment.Show;
 import entertainment.Video;
 import utils.Utils;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class ActorsQuery extends Query{
+public final class ActorsQuery extends Query {
 
-    // nu stiua daca la creere sa adaug si listele de actori si video de care am nevoie
 
-    public ActorsQuery(int id, int number, String objectType, String sortCriteria, String criteria, List<List<String>> filter) {
+    public ActorsQuery(final int id, final int number,
+                       final String objectType, final String sortCriteria,
+                       final String criteria, final List<List<String>> filter) {
         super(id, number, objectType, sortCriteria, criteria, filter);
     }
 
-    // average for actors - finished
+    /**
+     * method that sorts the actors by average rating
+     * @param actors list of all actors
+     * @param videos list o all videos in database
+     * @return the N actors sorted by average rating
+     */
+    public List<Actor> averageList(final List<Actor> actors, final List<Video> videos) {
 
-    public List<Actor> averageList(List<Actor>actors, List<Video> videos){
-        // better safe than sorry
         List<Actor> sortActors = new ArrayList<>();
 
-
-        for (Actor actor:
-                actors) {
+        for (Actor actor
+                : actors) {
             actor.computeAverage(videos);
-            if (actor.getAverage() != 0){
+            if (actor.getAverage() != 0) {
                 sortActors.add(actor);
             }
         }
 
-
-
-
         RatingComparator cmp = new RatingComparator();
 
-        if (super.getSortCriteria().equals("asc")){
+        if (super.getSortCriteria().equals("asc")) {
             Collections.sort(sortActors, cmp);
         }
-        else if(super.getSortCriteria().equals("desc"))
+        if (super.getSortCriteria().equals("desc")) {
             Collections.sort(sortActors, Collections.reverseOrder(cmp));
+        }
 
-        //List<String> firstNElementsList = list.stream().limit(n).collect(Collectors.toList())
-        if(super.getNumber() < sortActors.size()){// <= ??
+        if (super.getNumber() < sortActors.size()) {
             List<Actor> first;
             first = sortActors.stream().limit(super.getNumber()).collect(Collectors.toList());
             return first;
@@ -58,51 +61,65 @@ public class ActorsQuery extends Query{
         return sortActors;
     }
 
-    public List<Actor> awardsList(List<Actor> actors) {
+    /**
+     * similar with the method before
+     * the sorting criteria differs
+     * @param actors
+     * @return
+     */
+    public List<Actor> awardsList(final List<Actor> actors) {
 
-        List<String> awards = super.getFilter().get(3);// sau 3
+        List<String> awards = super.getFilter().get(getFilter().size() - 1);
         List<Actor> sortActors = new ArrayList<>();
-
         List<ActorsAwards> awards1 = new ArrayList<>();
 
-        for (String s:
-             awards) {
+        for (String s
+                : awards) {
             awards1.add(Utils.stringToAwards(s));
-        }
-        for (Actor actor: actors){
 
-            if(actor.getAwards().keySet().containsAll(awards1)){
+        }
+        for (Actor actor
+                : actors) {
+
+            if (actor.getAwards().keySet().containsAll(awards1)) {
                 sortActors.add(actor);
             }
         }
+
         AwardComparator cmp = new AwardComparator();
 
-        if (super.getSortCriteria().equals("asc")){
+        if (super.getSortCriteria().equals("asc")) {
             Collections.sort(sortActors, cmp);
         }
-        else if(super.getSortCriteria().equals("desc"))
+        if (super.getSortCriteria().equals("desc")) {
             Collections.sort(sortActors, Collections.reverseOrder(cmp));
-
+        }
         return sortActors;
 
     }
 
-    public List<Actor> filterList(List<Actor> actors){
+    /**
+     *
+     * @param actors
+     * @return list of actors that contains the
+     * given key-words in their career description
+     */
+    public List<Actor> filterList(final List<Actor> actors) {
 
         Map<String, Boolean> keyWordsFreq = new LinkedHashMap<>();
 
-        List<String> keyWords = super.getFilter().get(2);
+        List<String> keyWords = super.getFilter().get(getFilter().size() - 2);
         List<Actor> sorted = new ArrayList<>();
 
         for (Actor actor: actors) {
             for (String s : keyWords) {
                 keyWordsFreq.put(s, false);
-                //List<String> match = Arrays.asList(actor.getCareer().split(" "));
                 if (Pattern.compile(Pattern.quote(s),
-                        Pattern.CASE_INSENSITIVE).matcher(actor.getCareer()).find()){
-                    keyWordsFreq.put(s,true);
+                        Pattern.CASE_INSENSITIVE).matcher(actor.getCareer()).find()) {
+                    keyWordsFreq.put(s, true);
                 }
             }
+
             HashSet<Boolean> values = new HashSet<>(keyWordsFreq.values());
             boolean isUnique = values.size() == 1 && values.contains(true);
 
@@ -110,14 +127,15 @@ public class ActorsQuery extends Query{
                 sorted.add(actor);
             }
         }
+
         NameComparator cmp = new NameComparator();
 
-        if (super.getSortCriteria().equals("asc")){
+        if (super.getSortCriteria().equals("asc")) {
             Collections.sort(sorted, cmp);
         }
-        else if(super.getSortCriteria().equals("desc"))
+        if (super.getSortCriteria().equals("desc")) {
             Collections.sort(sorted, Collections.reverseOrder(cmp));
-
+        }
         return sorted;
     }
 
