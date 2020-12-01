@@ -336,6 +336,52 @@ public final class Runner {
     }
 
     /**
+     * recommendations strategies
+     * @param r
+     * @param videos
+     */
+    public void recommendVideo(final Recommend r, final List<Video> videos) {
+
+        User currUser = null;
+
+        for (User user
+                : this.users) {
+            if (r.getUsername().equals(user.getUsername())) {
+                currUser = user;
+                break;
+            }
+        }
+
+        if (r.getType().equals(Constants.STANDARD)) {
+            if (r.standard(videos, currUser) != null) {
+                String message = Constants.STANDARD_RES
+                        + Constants.RECOMMENDATION_RESULT
+                        + r.standard(videos, currUser).getName();
+                this.outMessage.put(r.getId(), message);
+            }
+        }else
+        if (r.getType().equals(Constants.BEST_UNSEEN)) {
+            if (r.bestUnseen(videos, currUser) != null) {
+                String message = Constants.BEST_RES
+                        + Constants.RECOMMENDATION_RESULT
+                        + r.standard(videos, currUser).getName();
+                this.outMessage.put(r.getId(), message);
+            }
+        }
+        if (r.getType().equals(Constants.FAVORITE)) {
+            if (r.favorite(videos, currUser, this.users) != null) {
+                String message = Constants.FAVORITE_RES
+                        + Constants.RECOMMENDATION_RESULT
+                        + r.standard(videos, currUser).getName();
+                this.outMessage.put(r.getId(), message);
+            }
+        }
+
+
+
+    }
+
+    /**
      * parse the action to be executed
      * @param actions
      */
@@ -348,6 +394,7 @@ public final class Runner {
              */
             if (a.getActionType().equals(Constants.COMMAND)) {
                 Command c = this.commands.get(0);
+                assert c != null;
                 executeCommand(c);
                 this.commands.remove(c);
             }
@@ -355,7 +402,8 @@ public final class Runner {
              * query case
              */
             if (a.getActionType().equals(Constants.QUERY)) {
-                Query q = queries.get(0);
+                Query q = this.queries.get(0);
+                assert q != null;
                 switch (q.getObjectType()) {
                     case Constants.ACTORS -> executeActorQuery(q);
                     case Constants.MOVIES, Constants.SHOWS -> executeVideoQuery(q);
@@ -364,6 +412,18 @@ public final class Runner {
                             + q.getObjectType());
                 }
                 queries.remove(q);
+            }
+            /**
+             * recommendation case
+             */
+            if (a.getActionType().equals(Constants.RECOMMENDATION)) {
+                Recommend r = this.recommends.get(0);
+                assert r != null;
+                List<Video> videos = new ArrayList<>();
+                videos.addAll(this.movies);
+                videos.addAll(this.shows);
+                recommendVideo(r, videos);
+                this.recommends.remove(r);
             }
         }
     }

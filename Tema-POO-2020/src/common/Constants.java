@@ -62,9 +62,16 @@ public final class Constants {
     public static final String MOST = "most_viewed";
     public static final String RATINGS = "ratings";
     public static final String QUERY_RESULT = "Query result: ";
-
-
-
+    public static final String RECOMMENDATION_RESULT = "Recommendation result: ";
+    public static final String BEST_RES = "BestRatedUnseen";
+    public static final String STANDARD_RES = "Standard";
+    public static final String POPULAR_RES = "Popular";
+    public static final String FAVORITE_RES = "Favorite";
+    public static final String SEARCH_RES = "Search";
+    public static final String STANDARD = "standard";
+    public static final String BEST_UNSEEN = "best_unseen";
+    public static final String POPULAR = "popular";
+    public static final String SEARCH = "search";
 
 
     // checker constants

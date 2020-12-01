@@ -18,10 +18,12 @@ public abstract class Video {
     private int noFavorite;
     private int noViews;
     private int durationVideo;
+    private int id;
 
 
     public Video(final String name, final int year,
-                 final List<String> genres, final List<String> cast) {
+                 final List<String> genres, final List<String> cast,
+                 final int id) {
 
         this.name = name;
         this.year = year;
@@ -31,6 +33,7 @@ public abstract class Video {
         this.noFavorite = 0;
         this.noViews = 0;
         this.durationVideo = 0;
+        this.id = id;
     }
 
     /**
@@ -159,6 +162,22 @@ public abstract class Video {
      */
     public void setDurationVideo(final int durationVideo) {
         this.durationVideo = durationVideo;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(final int id) {
+        this.id = id;
     }
 
     /**

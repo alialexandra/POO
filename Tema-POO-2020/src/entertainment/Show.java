@@ -14,8 +14,9 @@ public final class Show extends Video {
     public Show(final String name,
                 final int year,
                 final List<String> genres, final List<String> cast,
-                final int noSeasons, final ArrayList<Season> seasons) {
-        super(name, year, genres, cast);
+                final int noSeasons, final ArrayList<Season> seasons,
+                final int id) {
+        super(name, year, genres, cast, id);
         this.noSeasons = noSeasons;
         this.seasons = seasons;
 

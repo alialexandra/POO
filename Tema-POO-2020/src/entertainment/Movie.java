@@ -11,8 +11,9 @@ public final class Movie  extends Video {
 
     public Movie(final String name, final int year,
                  final List<String> genres, final List<String> cast,
-                 final int duration) {
-        super(name, year, genres, cast);
+                 final int duration,
+                 final int id) {
+        super(name, year, genres, cast, id);
         this.duration = duration;
     }
 

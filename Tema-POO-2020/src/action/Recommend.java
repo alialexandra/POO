@@ -1,7 +1,12 @@
 package action;
 
+import comparators.BestRatingComp;
+import comparators.FavoriteComp;
 import entertainment.Video;
+import users.User;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class Recommend {
@@ -46,8 +51,19 @@ public final class Recommend {
      * @param videos
      * @return
      */
-    public Video standard(final List<Video> videos) {
-        return null;
+    public Video standard(final List<Video> videos,
+                          final User user) {
+        Video found = null;
+
+        for (Video v
+                : videos) {
+            if (!user.getHistory().containsKey(v.getName())) {
+               found = v;
+               break;
+            }
+        }
+        return found;
+
     }
 
     /**
@@ -55,7 +71,24 @@ public final class Recommend {
      * @param videos
      * @return
      */
-    public Video bestUnseen(final List<Video> videos) {
+    public Video bestUnseen(final List<Video> videos,
+                            final User user) {
+
+        ArrayList<Video> unseen = new ArrayList<>();
+
+        for (Video v
+                : videos) {
+            if (!user.getHistory().containsKey(v.getName())) {
+                unseen.add(v);
+            }
+        }
+        BestRatingComp cmp = new BestRatingComp();
+
+        unseen.sort(Collections.reverseOrder(cmp));
+
+        if (!unseen.isEmpty()) {
+            return unseen.get(0);
+        }
         return null;
     }
 
@@ -70,11 +103,49 @@ public final class Recommend {
 
     /**
      *
+     * @param v
+     * @param users
+     */
+    private void computeFavFreq(final Video v, final List<User> users) {
+        int counts = 0;
+        for (User user
+                : users) {
+            for (String s
+                    : user.getFavourite()) {
+                if (v.getName().equals(s)) {
+                    counts++;
+                }
+            }
+        }
+        v.setNoFavorite(counts);
+    }
+    /**
+     *
      * @param videos
      * @return
      */
-    public Video favorite(final List<Video> videos) {
+    public Video favorite(final List<Video> videos,
+                          final User user,
+                          final List<User> users) {
+
+        ArrayList<Video> unseen = new ArrayList<>();
+
+        for (Video v
+                : videos) {
+            if (!user.getHistory().containsKey(v.getName())) {
+                computeFavFreq(v, users);
+                unseen.add(v);
+            }
+        }
+
+        FavoriteComp cmp = new FavoriteComp();
+        unseen.sort(Collections.reverseOrder(cmp));
+
+        if (!unseen.isEmpty()) {
+            return unseen.get(0);
+        }
         return null;
+
     }
 
     /**
@@ -83,6 +154,15 @@ public final class Recommend {
      * @return
      */
     public List<Video> search(final List<Video> videos) {
+        return null;
+    }
+
+
+    /**
+     * make the recommendation based on its type
+     * @param type
+     */
+    public String execute(final String type) {
         return null;
     }
 

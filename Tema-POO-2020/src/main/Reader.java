@@ -181,14 +181,16 @@ public final class Reader {
      * @param moviesInput
      */
     public void parseMovie(final List<MovieInputData> moviesInput) {
-
+        int index = 0;
         for (MovieInputData movie
                 : moviesInput) {
             this.movies.add(new Movie(movie.getTitle(),
                     movie.getYear(),
                     movie.getGenres(),
                     movie.getCast(),
-                    movie.getDuration()));
+                    movie.getDuration(),
+                    index));
+            index++;
         }
     }
 
@@ -197,6 +199,7 @@ public final class Reader {
      * @param showInput
      */
     public void parseShows(final List<SerialInputData> showInput) {
+        int index = this.movies.size();
         for (SerialInputData show
                 : showInput) {
             this.shows.add(new Show(show.getTitle(),
@@ -204,7 +207,9 @@ public final class Reader {
                     show.getGenres(),
                     show.getCast(),
                     show.getNumberSeason(),
-                    show.getSeasons()));
+                    show.getSeasons(),
+                    index));
+            index++;
         }
 
     }
@@ -253,7 +258,7 @@ public final class Reader {
                 case Constants.RECOMMENDATION:
                     this.recommends.add(new Recommend(
                             a.getActionId(),
-                            a.getActionType(),
+                            a.getType(),
                             a.getUsername()));
                     break;
                 default:
