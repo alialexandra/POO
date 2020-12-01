@@ -19,6 +19,7 @@ public abstract class Video {
     private int noViews;
     private int durationVideo;
     private int id;
+    private int genreView;
 
 
     public Video(final String name, final int year,
@@ -29,11 +30,12 @@ public abstract class Video {
         this.year = year;
         this.genres = genres;
         this.cast = cast;
+        this.id = id;
         this.ratingAverage = 0;
         this.noFavorite = 0;
         this.noViews = 0;
         this.durationVideo = 0;
-        this.id = id;
+        this.genreView = 0;
     }
 
     /**
@@ -178,6 +180,14 @@ public abstract class Video {
      */
     public void setId(final int id) {
         this.id = id;
+    }
+
+    public int getGenreView() {
+        return genreView;
+    }
+
+    public void setGenreView(int genreView) {
+        this.genreView = genreView;
     }
 
     /**

@@ -259,7 +259,8 @@ public final class Reader {
                     this.recommends.add(new Recommend(
                             a.getActionId(),
                             a.getType(),
-                            a.getUsername()));
+                            a.getUsername(),
+                            a.getGenre()));
                     break;
                 default:
                     break;

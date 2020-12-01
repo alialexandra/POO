@@ -13,10 +13,8 @@ import entertainment.Show;
 import entertainment.Video;
 import fileio.ActionInputData;
 import users.User;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public final class Runner {
 
@@ -336,6 +334,23 @@ public final class Runner {
     }
 
     /**
+     * check if the search genre is a valid one
+     * @return
+     */
+    private boolean checkSearchValues(final List<Video> videos,
+                                      final String searchGenre) {
+        boolean valid = false;
+        for (Video v
+        :videos){
+            if (v.getGenres().contains(searchGenre)) {
+                valid = true;
+                break;
+            }
+        }
+        return valid;
+    }
+
+    /**
      * recommendations strategies
      * @param r
      * @param videos
@@ -369,16 +384,49 @@ public final class Runner {
             }
         }
         if (r.getType().equals(Constants.FAVORITE)) {
-            if (r.favorite(videos, currUser, this.users) != null) {
+            if( Objects.equals(currUser.getSub(), Constants.PREMIUM)) {
+
+                if (r.favorite(videos, currUser, this.users) != null) {
                 String message = Constants.FAVORITE_RES
                         + Constants.RECOMMENDATION_RESULT
                         + r.standard(videos, currUser).getName();
                 this.outMessage.put(r.getId(), message);
             }
+        } else {
+            String message = Constants.FAVORITE_RES + Constants.INVALID;
+            this.outMessage.put(r.getId(), message);
+            }
+
         }
+        if (r.getType().equals(Constants.POPULAR)) {
+            if( Objects.equals(currUser.getSub(), Constants.PREMIUM)) {
+                if (r.favorite(videos, currUser, this.users) != null) {
+                    String message = Constants.FAVORITE_RES
+                            + Constants.RECOMMENDATION_RESULT
+                            + r.standard(videos, currUser).getName();
+                    this.outMessage.put(r.getId(), message);
+                }
+            } else {
+                String message = Constants.POPULAR_RES + Constants.INVALID;
+                this.outMessage.put(r.getId(), message);
+            }
 
-
-
+        }
+        if (r.getType().equals(Constants.SEARCH)) {
+            if( Objects.equals(currUser.getSub(), Constants.PREMIUM)
+            && checkSearchValues(videos, r.getGenre())) {
+                if (r.favorite(videos, currUser, this.users) != null) {
+                    String message = Constants.SEARCH_RES
+                            + Constants.RECOMMENDATION_RESULT
+                            + r.standard(videos, currUser).getName();
+                    this.outMessage.put(r.getId(), message);
+                }
+            } else if(currUser.getSub().equals(Constants.BASIC)
+            || (!checkSearchValues(videos, r.getGenre()) )) {
+                String message = Constants.SEARCH_RES + Constants.INVALID;
+                this.outMessage.put(r.getId(), message);
+            }
+        }
     }
 
     /**

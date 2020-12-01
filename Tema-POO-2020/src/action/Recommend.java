@@ -14,12 +14,16 @@ public final class Recommend {
     private int id;
     private String type;
     private String username;
+    private String genre;
+
 
     public Recommend(final int id, final String type,
-                     final String username) {
+                     final String username,
+                     final String genre) {
         this.id = id;
         this.type = type;
         this.username = username;
+        this.genre = genre;
     }
 
     public int getId() {
@@ -44,6 +48,14 @@ public final class Recommend {
 
     public void setUsername(final String username) {
         this.username = username;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getGenre() {
+        return genre;
     }
 
     /**
@@ -93,6 +105,15 @@ public final class Recommend {
     }
 
     /**
+     * compute the number of the appereance of each video
+     * @param users
+     * @param video
+     */
+    private void computePopularGenre(final List<User> users,
+                                     final Video video) {
+
+    }
+    /**
      *
      * @param videos
      * @return
@@ -129,22 +150,25 @@ public final class Recommend {
                           final List<User> users) {
 
         ArrayList<Video> unseen = new ArrayList<>();
+        Video found = null;
 
         for (Video v
                 : videos) {
-            if (!user.getHistory().containsKey(v.getName())) {
                 computeFavFreq(v, users);
                 unseen.add(v);
-            }
         }
 
         FavoriteComp cmp = new FavoriteComp();
         unseen.sort(Collections.reverseOrder(cmp));
-
-        if (!unseen.isEmpty()) {
-            return unseen.get(0);
+        for (Video v
+                : unseen) {
+            if (!user.getHistory().containsKey(v.getName())) {
+                found = v;
+                break;
+            }
         }
-        return null;
+
+        return found;
 
     }
 
@@ -157,14 +181,6 @@ public final class Recommend {
         return null;
     }
 
-
-    /**
-     * make the recommendation based on its type
-     * @param type
-     */
-    public String execute(final String type) {
-        return null;
-    }
 
 
 }
